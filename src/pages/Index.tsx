@@ -386,7 +386,7 @@ const Index = () => {
       </section>
 
       {/* Trending Products */}
-      <section className="py-12 bg-card">
+      <section className="py-8 bg-card">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-end justify-between mb-8">
             <div>
