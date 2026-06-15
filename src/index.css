@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide Google Translate UI */
+body { top: 0 !important; }
+.skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
+.goog-tooltip { display: none !important; }
+.goog-tooltip:hover { display: none !important; }
+.goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+
 @layer base {
   :root {
     --background: 0 0% 100%;

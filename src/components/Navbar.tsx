@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useSettings } from '@/hooks/useDatabase';
 import { useAuth } from '@/context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const { cartCount } = useCart();
@@ -123,11 +124,6 @@ const Navbar = () => {
                   </div>
                 </form>
               </div>
-
-              {/* Mobile Search Icon */}
-              <Link to="/parts" className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-secondary/50 text-foreground transition-all duration-300 hover:text-neon">
-                <Search className="w-[18px] h-[18px]" />
-              </Link>
               
               <Link to="/cart" aria-label="Shopping Cart" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-secondary/50 text-foreground transition-all duration-300 hover:text-neon hover:bg-secondary">
                 <ShoppingCart className="w-[18px] h-[18px]" />
@@ -137,6 +133,8 @@ const Navbar = () => {
                   </span>
                 )}
               </Link>
+
+              <LanguageSwitcher />
 
               <div className="hidden md:block w-px h-6 bg-border mx-1"></div>
 
