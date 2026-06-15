@@ -143,7 +143,7 @@ const Index = () => {
       <Navbar />
 
       {/* Top Banners Section */}
-      <section className="pt-28 lg:pt-32 bg-background relative">
+      <section className="pt-28 lg:pt-30 bg-background relative">
         <div className="w-full px-0 lg:px-0">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:h-[550px] xl:h-[750px]">
             {/* Main Slider (Left) */}
@@ -159,7 +159,7 @@ const Index = () => {
                   
                   <div className="absolute inset-0 p-5 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-2 lg:px-12 pointer-events-auto">
-                      <div className="bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block shadow-2xl">
+                      <div className=" p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block shadow-2xl">
                         <h1 className="heading-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3 text-white drop-shadow-xl">
                           {heroBanners[currentBanner].title}
                         </h1>
