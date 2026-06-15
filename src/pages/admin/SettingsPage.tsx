@@ -1,5 +1,4 @@
 import { useSettings, useUpdateSettings } from '@/hooks/useDatabase';
-import { usePageContent, useUpsertPageContent } from '@/hooks/usePageContents';
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { uploadProductImage } from '@/lib/image-upload';
@@ -32,8 +31,6 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
 const SettingsPage = () => {
   const { data: settings, isLoading } = useSettings();
   const updateSettings = useUpdateSettings();
-  const { data: filterSettingsPage } = usePageContent('filter-settings');
-  const upsertPage = useUpsertPageContent();
   const s = Array.isArray(settings) ? settings[0] || {} : settings || {};
   const [form, setForm] = useState({
     site_name: '', site_description: '', meta_title: '', meta_description: '',
@@ -43,8 +40,6 @@ const SettingsPage = () => {
     contact_email: '', contact_phone: '', contact_address: '',
     facebook_url: '', twitter_url: '', youtube_url: '', instagram_url: '',
   });
-
-  const [filterForm, setFilterForm] = useState({ years: '2024, 2023, 2022', models: 'Sedan, SUV, Truck' });
 
   const [logoUploading, setLogoUploading] = useState(false);
   const [faviconUploading, setFaviconUploading] = useState(false);
@@ -67,23 +62,6 @@ const SettingsPage = () => {
     }
   }, [settings]);
 
-  useEffect(() => {
-    if (filterSettingsPage?.content) {
-      try {
-        const parsed = JSON.parse(filterSettingsPage.content);
-        setFilterForm({
-          years: (parsed.years || []).join(', '),
-          models: (parsed.models || []).join(', ')
-        });
-      } catch (e) {}
-    } else {
-      setFilterForm({
-        years: '2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015',
-        models: 'Sedan, SUV, Truck, Sports'
-      });
-    }
-  }, [filterSettingsPage]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -99,16 +77,6 @@ const SettingsPage = () => {
       } else {
         await updateSettings.mutateAsync({ id: targetId, ...form });
       }
-
-      await upsertPage.mutateAsync({
-        page_slug: 'filter-settings',
-        page_title: 'Filter Settings',
-        content: JSON.stringify({
-          years: filterForm.years.split(',').map(s => s.trim()).filter(Boolean),
-          models: filterForm.models.split(',').map(s => s.trim()).filter(Boolean)
-        }),
-        is_active: true
-      });
 
       toast.success('Settings saved');
     } catch (err: any) { 
@@ -208,8 +176,6 @@ const SettingsPage = () => {
                   <option value="en">English</option>
                 </select>
               </div>
-            </Section>
-
             </Section>
 
             <Section title="Contact Information">
