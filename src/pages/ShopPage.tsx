@@ -93,10 +93,10 @@ const ShopPage = () => {
             <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80" alt="Background" className="w-full h-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#111] via-[#111]/60 to-transparent"></div>
           </div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          <div className="container mx-auto px-4 mt-2 lg:px-8 relative z-10">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <span className="text-neon font-body text-sm font-bold tracking-[0.3em] uppercase">{t('shop.collection')}</span>
-              <h1 className="heading-display text-4xl md:text-5xl lg:text-4xl font-extrabold mt-3 text-white tracking-tight">
+              <h1 className="heading-display text-3xl md:text-4xl lg:text-3xl font-extrabold mt-3 text-white tracking-tight">
                 {activeCategoryName || (categoryFilter ? categoryFilter.charAt(0).toUpperCase() + categoryFilter.slice(1) : t('shop.all_products'))}
               </h1>
             </motion.div>
