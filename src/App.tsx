@@ -33,6 +33,7 @@ const CheckoutLeadsManager = lazy(() => import("./pages/admin/CheckoutLeadsManag
 const CategoriesManager = lazy(() => import("./pages/admin/CategoriesManager.tsx"));
 const BannersManager = lazy(() => import("./pages/admin/BannersManager.tsx"));
 const AnalyticsPage = lazy(() => import("./pages/admin/AnalyticsPage.tsx"));
+const VehicleDataManager = lazy(() => import("./pages/admin/VehicleDataManager.tsx"));
 const VisitorAnalyticsPage = lazy(() => import("./pages/admin/VisitorAnalyticsPage.tsx"));
 const ShippingMethodsManager = lazy(() => import("./pages/admin/ShippingMethodsManager.tsx"));
 const ReviewsManager = lazy(() => import("./pages/admin/ReviewsManager.tsx"));
@@ -96,6 +97,7 @@ const App = () => (
                     <Route path="orders" element={<OrdersManager />} />
                     <Route path="orders/:id" element={<OrderDetailsPage />} />
                     <Route path="categories" element={<CategoriesManager />} />
+                    <Route path="vehicle-data" element={<VehicleDataManager />} />
                     <Route path="coupons" element={<CouponsManager />} />
                     <Route path="checkout-leads" element={<CheckoutLeadsManager />} />
                     <Route path="banners" element={<BannersManager />} />

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Star, Zap, Truck, RefreshCw, Shield, ChevronRight, ChevronLeft, Loader2, Search } from 'lucide-react';
 import { useActiveProducts, useActiveBanners } from '@/hooks/useDatabase';
 import { useActiveCategories } from '@/hooks/useCategories';
+import { usePageContent } from '@/hooks/usePageContents';
 import { useLanguage } from '@/context/LanguageContext';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
@@ -13,7 +14,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 const fallbackImage = heroImage;
 
 // Automotive Brands
-const displayBrands = ['TOYOTA', 'NISSAN', 'HONDA', 'BMW', 'MERCEDES', 'BOSCH', 'MICHELIN', 'DENSO', 'NGK', 'CASTROL', 'BREMBO', 'K&N', 'VALEO', 'HELLA'];
+// Dynamically generated from active products
 
 const reviews = [
   { name: 'Khalid A.', text: 'Authentic auto parts, fast shipping. Best car accessories store in Oman!', rating: 5 },
@@ -25,6 +26,8 @@ const Index = () => {
   const { data: dbProducts = [], isLoading: productsLoading } = useActiveProducts();
   const { data: dbCategories = [], isLoading: categoriesLoading } = useActiveCategories();
   const { data: banners = [], isLoading: bannersLoading } = useActiveBanners();
+  const { data: filterSettingsPage } = usePageContent('filter-settings');
+  const filterSettings = filterSettingsPage?.content ? JSON.parse(filterSettingsPage.content) : { years: [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015], models: ['Sedan', 'SUV', 'Truck', 'Sports'] };
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [currentBanner, setCurrentBanner] = useState(0);
@@ -39,6 +42,7 @@ const Index = () => {
     rating: Number(p.rating) || 4.5, reviews: p.reviews || 0,
     isTrending: p.is_trending || false, isNew: p.is_new || false,
   }));
+  const dynamicBrands = Array.from(new Set(products.map(p => p.brand.trim().toUpperCase()))).filter(Boolean).sort();
   const trendingProducts = products.filter(p => p.isTrending);
   const newProducts = products.filter(p => p.isNew);
   const [email, setEmail] = useState('');
@@ -257,18 +261,15 @@ const Index = () => {
               }} className="flex-1 flex flex-col sm:flex-row gap-3 w-full">
               <select value={searchYear} onChange={(e) => setSearchYear(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
                 <option value="">Select Year</option>
-                {[2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015].map(y => <option key={y} value={y}>{y}</option>)}
+                {[...filterSettings.years].sort((a, b) => String(b).localeCompare(String(a), undefined, { numeric: true })).map((y: string | number) => <option key={y} value={y}>{y}</option>)}
               </select>
               <select value={searchMake} onChange={(e) => setSearchMake(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
                 <option value="">Select Make</option>
-                {displayBrands.map(b => <option key={b} value={b}>{b}</option>)}
+                {dynamicBrands.map(b => <option key={b} value={b}>{b}</option>)}
               </select>
               <select value={searchModel} onChange={(e) => setSearchModel(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
                 <option value="">Select Model</option>
-                <option value="Sedan">Sedan</option>
-                <option value="SUV">SUV</option>
-                <option value="Truck">Truck</option>
-                <option value="Sports">Sports</option>
+                {filterSettings.models.map((m: string) => <option key={m} value={m}>{m}</option>)}
               </select>
               <button type="submit" className="bg-neon text-accent-foreground font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg hover:bg-neon-glow transition-colors shadow-md w-full sm:w-auto">
                 Search
@@ -317,7 +318,7 @@ const Index = () => {
       {/* Brand Ticker
       <section className="py-5 border-b border-border bg-card overflow-hidden">
         <div className="flex items-center gap-12 animate-marquee whitespace-nowrap">
-          {[...displayBrands, ...displayBrands, ...displayBrands].map((brand, i) => (
+          {[...dynamicBrands, ...dynamicBrands, ...dynamicBrands].map((brand, i) => (
             <span key={i} className="font-heading text-2xl font-bold text-muted-foreground/30 uppercase tracking-wider">{brand}</span>
           ))}
         </div>
