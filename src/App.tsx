@@ -15,8 +15,10 @@ import VisitorTracker from "@/components/VisitorTracker";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Loader2 } from "lucide-react";
 
-// Lazy load all pages for better performance
-const Index = lazy(() => import("./pages/Index.tsx"));
+// Eager load homepage for better LCP performance
+import Index from "./pages/Index.tsx";
+
+// Lazy load other pages
 const ShopPage = lazy(() => import("./pages/ShopPage.tsx"));
 const ProductPage = lazy(() => import("./pages/ProductPage.tsx"));
 const CartPage = lazy(() => import("./pages/CartPage.tsx"));

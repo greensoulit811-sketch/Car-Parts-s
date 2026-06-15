@@ -8,9 +8,10 @@ import { useLanguage } from '@/context/LanguageContext';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import heroImage from '@/assets/hero-sports.jpg';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+// Use an optimized, highly compressed external image for the fallback hero instead of a 520KB local asset to boost LCP
+const heroImage = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80";
 const fallbackImage = heroImage;
 
 // Automotive Brands
@@ -128,16 +129,8 @@ const Index = () => {
   const getCategoryCount = (slug: string) =>
     products.filter(p => p.category === slug).length;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="flex h-[80vh] items-center justify-center pt-20">
-          <Loader2 className="w-12 h-12 animate-spin text-neon" />
-        </div>
-      </div>
-    );
-  }
+  // Removed full-page blocking loader to improve LCP
+  // We now let the page render instantly with empty arrays/fallbacks while data loads
 
   return (
     <div className="min-h-screen bg-background">
@@ -200,7 +193,11 @@ const Index = () => {
               ) : (
                 <>
                   <div className="absolute inset-0">
-                    <img src={heroImage} alt="Athletic running shoes in action" fetchPriority="high" className="w-full h-full object-cover" />
+                    {bannersLoading ? (
+                      <div className="w-full h-full bg-secondary/20 animate-pulse" />
+                    ) : (
+                      <img src={heroImage} alt="Athletic running shoes in action" fetchPriority="high" className="w-full h-full object-cover" />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
                   </div>
                   <div className="absolute inset-0 p-5 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
@@ -398,9 +395,15 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 lg:gap-4">
-            {trendingProducts.slice(0, 10).map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {productsLoading ? (
+               Array.from({ length: 5 }).map((_, i) => (
+                 <div key={i} className="bg-card border border-border rounded-lg h-[300px] animate-pulse"></div>
+               ))
+            ) : (
+              trendingProducts.slice(0, 10).map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -418,9 +421,15 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 lg:gap-4">
-            {newProducts.slice(0, visibleNewCount).map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {productsLoading ? (
+               Array.from({ length: 5 }).map((_, i) => (
+                 <div key={i} className="bg-card border border-border rounded-lg h-[300px] animate-pulse"></div>
+               ))
+            ) : (
+              newProducts.slice(0, visibleNewCount).map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
           </div>
           
           {visibleNewCount < newProducts.length && (
