@@ -144,10 +144,10 @@ const Index = () => {
 
       {/* Top Banners Section */}
       <section className="pt-28 lg:pt-32 bg-background relative">
-        <div className="w-full px-4 lg:px-0">
+        <div className="w-full px-0 lg:px-0">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:h-[550px] xl:h-[750px]">
             {/* Main Slider (Left) */}
-            <div className={`relative w-full h-[500px] lg:h-full overflow-hidden rounded-xl lg:rounded-none ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+            <div className={`relative w-full h-[400px] lg:h-full overflow-hidden  ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
               {heroBanners.length > 0 ? (
                 <>
                   <AnimatePresence mode="wait">
@@ -241,7 +241,7 @@ const Index = () => {
       </section>
 
       {/* Vehicle Finder Overlapping Widget */}
-      <section className="relative z-30 -mt-10 mb-10 px-4">
+      <section className="relative z-30 -mt-10 mb-10 px-0">
         <div className="container mx-auto max-w-6xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-2xl border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
             <div className="flex-shrink-0 flex items-center gap-3 w-full lg:w-auto mb-2 lg:mb-0">
