@@ -243,7 +243,7 @@ const Index = () => {
       {/* Vehicle Finder Overlapping Widget */}
       <section className="relative z-30 -mt-10 mb-10 px-0">
         <div className="container mx-auto max-w-6xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-2xl border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-lg border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
             <div className="flex-shrink-0 flex items-center gap-3 w-full lg:w-auto mb-2 lg:mb-0">
               <div className="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center">
                 <Search className="w-6 h-6 text-neon" />
