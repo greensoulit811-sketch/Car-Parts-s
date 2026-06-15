@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">
       {/* Top Bar - Hides on Scroll */}
-      <div className={`bg-[#0a0a0a] text-white/70 transition-all duration-300 overflow-hidden ${isScrolled ? 'h-0 opacity-0' : 'h-[30px] lg:h-[34px] opacity-100'}`}>
+      <div className={`bg-[#0a0a0a] text-white/70 transition-all duration-300 overflow-hidden ${isScrolled ? 'h-0 opacity-0' : 'h-[35px] lg:h-[34px] opacity-100'}`}>
         <div className="container mx-auto px-4 lg:px-8 h-full flex items-center justify-between text-[10px] lg:text-[11px] font-body tracking-wider uppercase font-semibold">
           {/* Mobile Marquee */}
           <div className="flex lg:hidden items-center w-full overflow-hidden relative">

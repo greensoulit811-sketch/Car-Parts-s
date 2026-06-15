@@ -88,7 +88,7 @@ const ShopPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-16 lg:pt-18">
-        <div className="bg-[#111] relative overflow-hidden py-10 lg:py-20">
+        <div className="bg-[#111] relative overflow-hidden py-16 lg:py-20">
           <div className="absolute inset-0">
             <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80" alt="Background" className="w-full h-full object-cover opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#111] via-[#111]/60 to-transparent"></div>
