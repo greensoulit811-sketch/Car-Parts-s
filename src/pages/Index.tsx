@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Star, Zap, Truck, RefreshCw, Shield, ChevronRight, ChevronLeft, Loader2, Search } from 'lucide-react';
+import { ArrowRight, Star, Zap, Truck, RefreshCw, Shield, ChevronRight, ChevronLeft, ChevronDown, Loader2, Search } from 'lucide-react';
 import { useActiveProducts, useActiveBanners } from '@/hooks/useDatabase';
 import { useActiveCategories } from '@/hooks/useCategories';
 import { usePageContent } from '@/hooks/usePageContents';
@@ -34,6 +34,7 @@ const Index = () => {
   const [searchMake, setSearchMake] = useState('');
   const [searchYear, setSearchYear] = useState('');
   const [searchModel, setSearchModel] = useState('');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const products = dbProducts.map(p => ({
     id: p.id, name: p.name, brand: p.brand, price: Number(p.price),
     originalPrice: p.original_price ? Number(p.original_price) : undefined,
@@ -244,37 +245,47 @@ const Index = () => {
       <section className="relative z-30 -mt-10 mb-10 px-0">
         <div className="container mx-auto max-w-6xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-lg border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
-            <div className="flex-shrink-0 flex items-center gap-3 w-full lg:w-auto mb-2 lg:mb-0">
-              <div className="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center">
-                <Search className="w-6 h-6 text-neon" />
+            <div 
+              className="flex-shrink-0 flex items-center justify-between w-full lg:w-auto mb-2 lg:mb-0 cursor-pointer lg:cursor-default"
+              onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center">
+                  <Search className="w-6 h-6 text-neon" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-bold text-lg text-foreground uppercase tracking-wide">Find Your Parts</h3>
+                  <p className="font-body text-xs text-muted-foreground">Select vehicle for exact fitment</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-heading font-bold text-lg text-foreground uppercase tracking-wide">Find Your Parts</h3>
-                <p className="font-body text-xs text-muted-foreground">Select vehicle for exact fitment</p>
-              </div>
+              <ChevronDown className={`w-5 h-5 text-neon lg:hidden transition-transform duration-300 ${isSearchExpanded ? 'rotate-180' : ''}`} />
             </div>
             
-            <form onSubmit={(e) => { 
-                e.preventDefault(); 
-                const query = `${searchYear} ${searchMake} ${searchModel}`.trim();
-                navigate(`/parts?search=${encodeURIComponent(query)}`); 
-              }} className="flex-1 flex flex-col sm:flex-row gap-3 w-full">
-              <select value={searchYear} onChange={(e) => setSearchYear(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
-                <option value="">Select Year</option>
-                {[...filterSettings.years].sort((a, b) => String(b).localeCompare(String(a), undefined, { numeric: true })).map((y: string | number) => <option key={y} value={y}>{y}</option>)}
-              </select>
-              <select value={searchMake} onChange={(e) => setSearchMake(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
-                <option value="">Select Make</option>
-                {dynamicBrands.map(b => <option key={b} value={b}>{b}</option>)}
-              </select>
-              <select value={searchModel} onChange={(e) => setSearchModel(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
-                <option value="">Select Model</option>
-                {filterSettings.models.map((m: string) => <option key={m} value={m}>{m}</option>)}
-              </select>
-              <button type="submit" className="bg-neon text-accent-foreground font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg hover:bg-neon-glow transition-colors shadow-md w-full sm:w-auto">
-                Search
-              </button>
-            </form>
+            <div className={`w-full lg:w-auto flex-1 grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out ${isSearchExpanded ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0 lg:grid-rows-[1fr] lg:opacity-100 lg:mt-0'}`}>
+              <div className="overflow-hidden">
+                <form onSubmit={(e) => { 
+                    e.preventDefault(); 
+                    const query = `${searchYear} ${searchMake} ${searchModel}`.trim();
+                    navigate(`/parts?search=${encodeURIComponent(query)}`); 
+                  }} className="flex flex-col sm:flex-row gap-3 w-full">
+                  <select value={searchYear} onChange={(e) => setSearchYear(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
+                    <option value="">Select Year</option>
+                    {[...filterSettings.years].sort((a, b) => String(b).localeCompare(String(a), undefined, { numeric: true })).map((y: string | number) => <option key={y} value={y}>{y}</option>)}
+                  </select>
+                  <select value={searchMake} onChange={(e) => setSearchMake(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
+                    <option value="">Select Make</option>
+                    {dynamicBrands.map(b => <option key={b} value={b}>{b}</option>)}
+                  </select>
+                  <select value={searchModel} onChange={(e) => setSearchModel(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
+                    <option value="">Select Model</option>
+                    {filterSettings.models.map((m: string) => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                  <button type="submit" className="bg-neon text-accent-foreground font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg hover:bg-neon-glow transition-colors shadow-md w-full sm:w-auto shrink-0">
+                    Search
+                  </button>
+                </form>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
