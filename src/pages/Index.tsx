@@ -143,11 +143,11 @@ const Index = () => {
       <Navbar />
 
       {/* Top Banners Section */}
-      <section className="pt-20 lg:pt-20 bg-background relative">
+      <section className="pt-28 lg:pt-32 bg-background relative">
         <div className="w-full px-4 lg:px-0">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:h-[550px] xl:h-[750px]">
             {/* Main Slider (Left) */}
-            <div className={`relative w-full h-[400px] lg:h-full overflow-hidden ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+            <div className={`relative w-full h-[500px] lg:h-full overflow-hidden rounded-xl lg:rounded-none ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
               {heroBanners.length > 0 ? (
                 <>
                   <AnimatePresence mode="wait">
@@ -157,10 +157,10 @@ const Index = () => {
                     </motion.div>
                   </AnimatePresence>
                   
-                  <div className="absolute inset-0 p-6 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-4 lg:px-12 pointer-events-auto">
-                      <div className="bg-black/30 backdrop-blur-sm p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block">
-                        <h1 className="heading-display text-4xl sm:text-6xl font-bold leading-tight mb-4 text-white drop-shadow-xl">
+                  <div className="absolute inset-0 p-5 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-2 lg:px-12 pointer-events-auto">
+                      <div className="bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block shadow-2xl">
+                        <h1 className="heading-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3 text-white drop-shadow-xl">
                           {heroBanners[currentBanner].title}
                         </h1>
                         {heroBanners[currentBanner].subtitle && (
@@ -202,10 +202,10 @@ const Index = () => {
                     <img src={heroImage} alt="Athletic running shoes in action" fetchPriority="high" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
                   </div>
-                  <div className="absolute inset-0 p-6 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-4 lg:px-12 pointer-events-auto">
-                      <div className="bg-black/30 backdrop-blur-sm p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block">
-                        <h1 className="heading-display text-4xl sm:text-6xl font-bold leading-[1.1] mb-4 text-white drop-shadow-xl">
+                  <div className="absolute inset-0 p-5 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
+                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-2 lg:px-12 pointer-events-auto">
+                      <div className="bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block shadow-2xl">
+                        <h1 className="heading-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-3 text-white drop-shadow-xl">
                           {t('hero.fuel')}<br /><span className="text-neon text-glow">{t('hero.game')}</span>
                         </h1>
                         <p className="text-gray-200 font-body text-base sm:text-lg mb-8 drop-shadow-md">
@@ -282,33 +282,35 @@ const Index = () => {
       {/* Trust Badges */}
       <section className="py-6 border-b border-border/50 bg-background/50">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-6 md:gap-12 lg:gap-20">
-            <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8 text-neon" />
-              <div>
-                <h4 className="font-heading font-bold text-sm uppercase text-foreground">100% Genuine Parts</h4>
-                <p className="font-body text-xs text-muted-foreground">Direct from manufacturers</p>
+          <div className="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-y-6 gap-x-2 md:gap-12 lg:gap-20">
+            <div className="flex items-center justify-center md:justify-start gap-2 md:gap-3">
+              <Shield className="w-6 h-6 md:w-8 md:h-8 text-neon shrink-0" />
+              <div className="text-left">
+                <h4 className="font-heading font-bold text-[11px] sm:text-sm uppercase text-foreground leading-tight">100% Genuine Parts</h4>
+                <p className="font-body text-[9px] sm:text-xs text-muted-foreground mt-0.5">Direct from manufacturers</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Truck className="w-8 h-8 text-neon" />
-              <div>
-                <h4 className="font-heading font-bold text-sm uppercase text-foreground">Fast Delivery</h4>
-                <p className="font-body text-xs text-muted-foreground">All across Oman</p>
+            <div className="flex items-center justify-center md:justify-start gap-2 md:gap-3">
+              <Truck className="w-6 h-6 md:w-8 md:h-8 text-neon shrink-0" />
+              <div className="text-left">
+                <h4 className="font-heading font-bold text-[11px] sm:text-sm uppercase text-foreground leading-tight">Fast Delivery</h4>
+                <p className="font-body text-[9px] sm:text-xs text-muted-foreground mt-0.5">All across Oman</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Zap className="w-8 h-8 text-neon" />
-              <div>
-                <h4 className="font-heading font-bold text-sm uppercase text-foreground">Best Price Match</h4>
-                <p className="font-body text-xs text-muted-foreground">Guaranteed lowest prices</p>
+            <div className="col-span-2 flex justify-center md:block">
+              <div className="flex items-center justify-center md:justify-start gap-2 md:gap-3">
+                <Zap className="w-6 h-6 md:w-8 md:h-8 text-neon shrink-0" />
+                <div className="text-left">
+                  <h4 className="font-heading font-bold text-[11px] sm:text-sm uppercase text-foreground leading-tight">Best Price Match</h4>
+                  <p className="font-body text-[9px] sm:text-xs text-muted-foreground mt-0.5">Guaranteed lowest prices</p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 hidden sm:flex">
-              <RefreshCw className="w-8 h-8 text-neon" />
-              <div>
-                <h4 className="font-heading font-bold text-sm uppercase text-foreground">Easy Returns</h4>
-                <p className="font-body text-xs text-muted-foreground">14-day return policy</p>
+            <div className="hidden sm:flex col-span-2 md:col-span-1 items-center justify-center md:justify-start gap-2 md:gap-3">
+              <RefreshCw className="w-6 h-6 md:w-8 md:h-8 text-neon shrink-0" />
+              <div className="text-left">
+                <h4 className="font-heading font-bold text-[11px] sm:text-sm uppercase text-foreground leading-tight">Easy Returns</h4>
+                <p className="font-body text-[9px] sm:text-xs text-muted-foreground mt-0.5">14-day return policy</p>
               </div>
             </div>
           </div>
