@@ -433,11 +433,11 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-card">
+      <section className="py-16 bg-card">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
             <span className="text-neon font-body text-sm font-bold tracking-[0.2em] uppercase">{t('why.label')}</span>
-            <h2 className="heading-display text-4xl md:text-2xl font-bold mt-2 text-foreground">{t('why.title')}</h2>
+            <h2 className="heading-display text-2xl md:text-2xl font-bold mt-2 text-foreground">{t('why.title')}</h2>
           </motion.div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {[
@@ -460,11 +460,11 @@ const Index = () => {
       </section>
 
       {/* Reviews */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
             <span className="text-neon font-body text-sm font-bold tracking-[0.2rem] uppercase">{t('reviews.label')}</span>
-            <h2 className="heading-display text-4xl md:text-2xl font-bold mt-2 text-foreground">{t('reviews.title')}</h2>
+            <h2 className="heading-display text-2xl md:text-2xl font-bold mt-2 text-foreground">{t('reviews.title')}</h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {reviews.map((review, i) => (
@@ -484,11 +484,11 @@ const Index = () => {
       </section>
 
       {/* Newsletter */}
-      <section className="py-20 bg-primary text-primary-foreground">
+      <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-xl mx-auto text-center">
             <span className="text-neon font-body text-sm font-bold tracking-[0.3em] uppercase">{t('newsletter.label')}</span>
-            <h2 className="heading-display text-3xl md:text-4xl font-bold mt-2 mb-4">{t('newsletter.title')}</h2>
+            <h2 className="heading-display text-2xl md:text-4xl font-bold mt-2 mb-4">{t('newsletter.title')}</h2>
             <p className="font-body text-primary-foreground/60 mb-8">{t('newsletter.subtitle')}</p>
             <form onSubmit={(e) => { e.preventDefault(); setEmail(''); }} className="flex flex-col sm:flex-row gap-0">
               <input type="email" aria-label="Email address for newsletter" placeholder={t('newsletter.placeholder')} value={email} onChange={(e) => setEmail(e.target.value)}
