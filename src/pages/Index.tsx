@@ -391,7 +391,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-8">
             <div>
               <span className="text-neon font-body text-sm font-bold tracking-[0.1em] uppercase">{t('trending.label')}</span>
-              <h2 className="heading-display text-2xl md:text-2xl font-bold mt-1 text-foreground">{t('trending.title')}</h2>
+              <h2 className="heading-display text-xl md:text-2xl font-bold mt-1 text-foreground">{t('trending.title')}</h2>
             </div>
             <Link to="/parts" className="flex items-center gap-2 font-body text-sm font-semibold tracking-widers text-foreground hover-neon transition-colors">
               {t('trending.view_all')} <ChevronRight className="w-4 h-4" />
@@ -411,7 +411,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-8">
             <div>
               <span className="text-neon font-body text-sm font-bold tracking-[0.1em] uppercase">{t('new.label')}</span>
-              <h2 className="heading-display text-2xl md:text-2xl font-bold mt-1 text-foreground">{t('new.title')}</h2>
+              <h2 className="heading-display text-xl md:text-2xl font-bold mt-1 text-foreground">{t('new.title')}</h2>
             </div>
             <Link to="/parts" className="flex items-center gap-2 font-body text-sm font-semibold tracking-widers text-foreground hover-neon transition-colors">
               {t('trending.view_all')} <ChevronRight className="w-4 h-4" />
