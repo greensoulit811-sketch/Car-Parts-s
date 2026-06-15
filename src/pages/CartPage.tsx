@@ -112,7 +112,7 @@ const CartPage = () => {
                         <span className="w-8 h-8 flex items-center justify-center font-body text-xs font-bold">{item.quantity}</span>
                         <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-card transition-colors"><Plus className="w-3 h-3" /></button>
                       </div>
-                      <span className="font-heading font-bold text-neon"><DirhamIcon className="w-[1.2em] mr-1" />{(item.product.price * item.quantity).toFixed(2)}</span>
+                      <span className="font-heading font-bold text-blue-500"><DirhamIcon className="w-[1.2em] mr-1" />{(item.product.price * item.quantity).toFixed(2)}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -161,7 +161,7 @@ const CartPage = () => {
               )}
 
               <div className="flex justify-between font-heading text-xl font-bold mb-8 text-foreground">
-                <span>{t('cart.total')}</span><span className="text-neon flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{finalTotal.toFixed(2)}</span>
+                <span>{t('cart.total')}</span><span className="text-blue-500 flex items-center font-bold"><DirhamIcon className="w-[1.2em] mr-1" />{finalTotal.toFixed(2)}</span>
               </div>
               <Link to="/checkout" className="w-full block text-center bg-primary text-primary-foreground py-4 font-body text-sm font-bold tracking-wider uppercase hover:bg-primary/90 transition-all duration-300 rounded-md mb-3">
                 {t('cart.checkout')}

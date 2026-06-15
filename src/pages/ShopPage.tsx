@@ -15,7 +15,12 @@ const ShopPage = () => {
   const { data: dbCategories = [] } = useActiveCategories();
   const { t } = useLanguage();
   const categoryFilter = searchParams.get('category') || '';
-  const [search, setSearch] = useState('');
+  const searchParam = searchParams.get('search') || '';
+  const [search, setSearch] = useState(searchParam);
+
+  useEffect(() => {
+    if (searchParam) setSearch(searchParam);
+  }, [searchParam]);
   
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
   const [showFilters, setShowFilters] = useState(false);
@@ -35,7 +40,12 @@ const ShopPage = () => {
     return products.filter(p => {
       if (categoryFilter && p.category !== categoryFilter) return false;
       
-      if (search && !p.name.toLowerCase().includes(search.toLowerCase()) && !p.brand.toLowerCase().includes(search.toLowerCase())) return false;
+      if (search) {
+        const searchTerms = search.toLowerCase().split(/\s+/).filter(Boolean);
+        const nameAndBrand = `${p.name} ${p.brand}`.toLowerCase();
+        const matchesAll = searchTerms.every(term => nameAndBrand.includes(term));
+        if (!matchesAll) return false;
+      }
       const maxPrice = priceRange[1] > 0 ? priceRange[1] : Infinity;
       if (p.price < priceRange[0] || p.price > maxPrice) return false;
       return true;
@@ -59,9 +69,7 @@ const ShopPage = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && visibleCount < filtered.length) {
-          setTimeout(() => {
-            setVisibleCount((prev) => prev + 12);
-          }, 800);
+          setVisibleCount((prev) => prev + 12);
         }
       },
       { threshold: 0.1 }

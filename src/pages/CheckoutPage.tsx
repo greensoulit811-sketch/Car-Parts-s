@@ -108,7 +108,7 @@ const CheckoutPage = () => {
         customer_email: '', customer_phone: form.phone,
         items: orderItems, total, status: 'pending', payment_method: 'cod',
         shipping_address: shippingAddress,
-        notes: `${form.notes}${selectedShipping ? `\nShipping: ${selectedShipping.name} (${shippingCharge === 0 ? 'Free' : 'Đ ' + shippingCharge})` : ''}${appliedCoupon ? `\nCoupon Applied: ${appliedCoupon.code} (-Đ ${discountAmount.toFixed(2)})` : ''}`,
+        notes: `${form.notes}${selectedShipping ? `\nShipping: ${selectedShipping.name} (${shippingCharge === 0 ? 'Free' : 'OMR ' + shippingCharge})` : ''}${appliedCoupon ? `\nCoupon Applied: ${appliedCoupon.code} (-OMR ${discountAmount.toFixed(2)})` : ''}`,
       });
       await markLeadCompleted();
       setOrderId(orderNumber);
@@ -280,7 +280,7 @@ const CheckoutPage = () => {
             <span className="text-muted-foreground">
               {items.reduce((s, i) => s + i.quantity, 0)} {t('checkout.items_count')}
             </span>
-            <span className="font-bold text-foreground flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{total.toFixed(3)}</span>
+            <span className="font-bold text-blue-500 flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{total.toFixed(3)}</span>
           </div>
         </div>
       </div>

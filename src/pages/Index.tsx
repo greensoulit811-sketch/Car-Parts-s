@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Star, Zap, Truck, RefreshCw, Shield, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
+import { ArrowRight, Star, Zap, Truck, RefreshCw, Shield, ChevronRight, ChevronLeft, Loader2, Search } from 'lucide-react';
 import { useActiveProducts, useActiveBanners } from '@/hooks/useDatabase';
 import { useActiveCategories } from '@/hooks/useCategories';
 import { useLanguage } from '@/context/LanguageContext';
@@ -26,7 +26,11 @@ const Index = () => {
   const { data: dbCategories = [], isLoading: categoriesLoading } = useActiveCategories();
   const { data: banners = [], isLoading: bannersLoading } = useActiveBanners();
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [currentBanner, setCurrentBanner] = useState(0);
+  const [searchMake, setSearchMake] = useState('');
+  const [searchYear, setSearchYear] = useState('');
+  const [searchModel, setSearchModel] = useState('');
   const products = dbProducts.map(p => ({
     id: p.id, name: p.name, brand: p.brand, price: Number(p.price),
     originalPrice: p.original_price ? Number(p.original_price) : undefined,
@@ -79,9 +83,7 @@ const Index = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && visibleNewCount < newProducts.length) {
-          setTimeout(() => {
-            setVisibleNewCount((prev) => prev + 10);
-          }, 800); // Show loading spinner for 800ms
+          setVisibleNewCount((prev) => prev + 10);
         }
       },
       { threshold: 0.1 }
@@ -136,94 +138,181 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero Banner Section */}
-      {heroBanners.length > 0 ? (
-        <section className="relative w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div key={currentBanner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} className="absolute inset-0">
-              <img src={heroBanners[currentBanner].image_url} alt={heroBanners[currentBanner].title} fetchPriority="high" decoding="async" width="1920" height="1080" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent md:bg-gradient-to-r md:from-primary/90 md:via-primary/50 md:to-transparent" />
-            </motion.div>
-          </AnimatePresence>
+      {/* Top Banners Section */}
+      <section className="pt-20 lg:pt-20 bg-background relative">
+        <div className="w-full px-4 lg:px-0">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:h-[550px] xl:h-[750px]">
+            {/* Main Slider (Left) */}
+            <div className={`relative w-full h-[400px] lg:h-full overflow-hidden ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+              {heroBanners.length > 0 ? (
+                <>
+                  <AnimatePresence mode="wait">
+                    <motion.div key={currentBanner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} className="absolute inset-0">
+                      <img src={heroBanners[currentBanner].image_url} alt={heroBanners[currentBanner].title} fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
+                    </motion.div>
+                  </AnimatePresence>
+                  
+                  <div className="absolute inset-0 p-6 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-4 lg:px-12 pointer-events-auto">
+                      <div className="bg-black/30 backdrop-blur-sm p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block">
+                        <h1 className="heading-display text-4xl sm:text-6xl font-bold leading-tight mb-4 text-white drop-shadow-xl">
+                          {heroBanners[currentBanner].title}
+                        </h1>
+                        {heroBanners[currentBanner].subtitle && (
+                          <p className="text-gray-200 font-body text-base sm:text-lg mb-8 drop-shadow-md">
+                            {heroBanners[currentBanner].subtitle}
+                          </p>
+                        )}
+                        {heroBanners[currentBanner].link_url && (
+                          <Link to={heroBanners[currentBanner].link_url!}
+                            className="inline-flex items-center gap-2 bg-neon text-accent-foreground px-8 py-4 font-body text-sm font-bold tracking-widest uppercase hover:bg-neon-glow transition-all duration-300 rounded-md shadow-[0_0_15px_rgba(var(--neon),0.4)]">
+                            {t('hero.shop_now')} <ArrowRight className="w-5 h-5" />
+                          </Link>
+                        )}
+                      </div>
+                    </motion.div>
+                  </div>
 
-          <div className="container mx-auto px-4 lg:px-8 relative z-10 h-full flex items-end pb-16 sm:pb-20 md:items-center md:pb-0">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-2xl">
-              <h1 className="heading-display text-3xl sm:text-5xl md:text-7xl lg:text-7xl font-bold leading-[0.95] mb-3 md:mb-6 text-primary-foreground">
-                {heroBanners[currentBanner].title}
-              </h1>
-              {heroBanners[currentBanner].subtitle && (
-                <p className="text-primary-foreground/70 font-body text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-lg">
-                  {heroBanners[currentBanner].subtitle}
-                </p>
+                  {heroBanners.length > 1 && (
+                    <>
+                      <button onClick={prevBanner} aria-label="Previous banner" className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/70 transition-colors border border-white/20">
+                        <ChevronLeft className="w-6 h-6 text-white" />
+                      </button>
+                      <button onClick={nextBanner} aria-label="Next banner" className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/70 transition-colors border border-white/20">
+                        <ChevronRight className="w-6 h-6 text-white" />
+                      </button>
+                      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+                        {heroBanners.map((_, i) => (
+                          <button key={i} onClick={() => setCurrentBanner(i)} aria-label={`Go to banner ${i + 1}`}
+                            className={`h-2 rounded-full transition-all duration-300 ${i === currentBanner ? 'w-10 bg-neon' : 'w-2 bg-white/50 hover:bg-white/80'}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="absolute inset-0">
+                    <img src={heroImage} alt="Athletic running shoes in action" fetchPriority="high" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
+                  </div>
+                  <div className="absolute inset-0 p-6 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
+                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-4 lg:px-12 pointer-events-auto">
+                      <div className="bg-black/30 backdrop-blur-sm p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block">
+                        <h1 className="heading-display text-4xl sm:text-6xl font-bold leading-[1.1] mb-4 text-white drop-shadow-xl">
+                          {t('hero.fuel')}<br /><span className="text-neon text-glow">{t('hero.game')}</span>
+                        </h1>
+                        <p className="text-gray-200 font-body text-base sm:text-lg mb-8 drop-shadow-md">
+                          {t('hero.subtitle')}
+                        </p>
+                        <Link to="/parts" className="inline-flex items-center gap-2 bg-neon text-accent-foreground px-8 py-4 font-body text-sm font-bold tracking-widest uppercase hover:bg-neon-glow transition-all duration-300 rounded-md shadow-[0_0_15px_rgba(var(--neon),0.4)]">
+                          {t('hero.shop_now')} <ArrowRight className="w-5 h-5" />
+                        </Link>
+                      </div>
+                    </motion.div>
+                  </div>
+                </>
               )}
-              {heroBanners[currentBanner].link_url && (
-                <Link to={heroBanners[currentBanner].link_url!}
-                  className="inline-flex items-center gap-2 bg-neon text-accent-foreground px-6 py-3 md:px-8 md:py-4 font-body text-xs md:text-sm font-bold tracking-widest uppercase hover:bg-neon-glow transition-all duration-300 glow-neon rounded-sm">
-                  {t('hero.shop_now')} <ArrowRight className="w-4 h-4" />
-                </Link>
-              )}
-            </motion.div>
-          </div>
+            </div>
 
-          {heroBanners.length > 1 && (
-            <>
-              <button onClick={prevBanner} aria-label="Previous banner" className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-background/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-background/50 transition-colors border border-border/30">
-                <ChevronLeft className="w-5 h-5 text-primary-foreground" />
-              </button>
-              <button onClick={nextBanner} aria-label="Next banner" className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-background/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-background/50 transition-colors border border-border/30">
-                <ChevronRight className="w-5 h-5 text-primary-foreground" />
-              </button>
-              <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-                {heroBanners.map((_, i) => (
-                  <button key={i} onClick={() => setCurrentBanner(i)} aria-label={`Go to banner ${i + 1}`}
-                    className={`h-2 rounded-full transition-all duration-300 ${i === currentBanner ? 'w-8 bg-neon' : 'w-2 bg-primary-foreground/40 hover:bg-primary-foreground/60'}`}
-                  />
+            {/* Side Promo Banners (Right) */}
+            {promoBanners.length > 0 && (
+              <div className="flex flex-col gap-4 h-full pr-0 lg:pr-4">
+                {promoBanners.slice(0, 2).map(b => (
+                  <Link key={b.id} to={b.link_url || '/parts'} className="group relative w-full h-[200px] lg:h-[calc(50%-0.5rem)] overflow-hidden block border-l-4 border-transparent hover:border-neon transition-all duration-300">
+                    <img src={b.image_url} alt={b.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6">
+                      <h3 className="font-heading text-xl md:text-2xl font-bold uppercase text-white drop-shadow-lg">{b.title}</h3>
+                      {b.subtitle && <p className="font-body text-sm text-gray-300 mt-2 drop-shadow-md">{b.subtitle}</p>}
+                    </div>
+                  </Link>
                 ))}
               </div>
-            </>
-          )}
-        </section>
-      ) : (
-        <section className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen flex items-center overflow-hidden">
-          <div className="absolute inset-0">
-            <img src={heroImage} alt="Athletic running shoes in action" fetchPriority="high" width="1920" height="1080" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent md:bg-gradient-to-r md:from-primary/90 md:via-primary/60 md:to-transparent" />
+            )}
           </div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-2xl">
-              <h1 className="heading-display text-4xl sm:text-6xl md:text-8xl lg:text-7xl font-bold leading-[0.9] mb-6 text-primary-foreground">
-                {t('hero.fuel')}<br /><span className="text-neon text-glow">{t('hero.game')}</span>
-              </h1>
-              <p className="text-primary-foreground/70 font-body text-base md:text-xl mb-8 max-w-lg">
-                {t('hero.subtitle')}
-              </p>
-              <Link to="/parts" className="inline-flex items-center gap-2 bg-neon text-accent-foreground px-6 py-3 md:px-8 md:py-4 font-body text-xs md:text-sm font-bold tracking-widest uppercase hover:bg-neon-glow transition-all duration-300 glow-neon rounded-sm">
-                {t('hero.shop_now')} <ArrowRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
-          </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* Promo Banners */}
-      {promoBanners.length > 0 && (
-        <section className="py-6 md:py-10">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className={`grid gap-4 ${promoBanners.length === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
-              {promoBanners.map(b => (
-                <Link key={b.id} to={b.link_url || '/parts'} className="block group relative aspect-[16/7] sm:aspect-[16/6] overflow-hidden rounded-lg">
-                  <img src={b.image_url} alt={b.title} loading="lazy" width="800" height="400" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6">
-                    <h3 className="font-heading text-lg md:text-2xl font-bold uppercase text-primary-foreground">{b.title}</h3>
-                    {b.subtitle && <p className="font-body text-xs md:text-sm text-primary-foreground/70 mt-1">{b.subtitle}</p>}
-                  </div>
-                </Link>
-              ))}
+      {/* Vehicle Finder Overlapping Widget */}
+      <section className="relative z-30 -mt-10 mb-10 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-2xl border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
+            <div className="flex-shrink-0 flex items-center gap-3 w-full lg:w-auto mb-2 lg:mb-0">
+              <div className="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center">
+                <Search className="w-6 h-6 text-neon" />
+              </div>
+              <div>
+                <h3 className="font-heading font-bold text-lg text-foreground uppercase tracking-wide">Find Your Parts</h3>
+                <p className="font-body text-xs text-muted-foreground">Select vehicle for exact fitment</p>
+              </div>
+            </div>
+            
+            <form onSubmit={(e) => { 
+                e.preventDefault(); 
+                const query = `${searchYear} ${searchMake} ${searchModel}`.trim();
+                navigate(`/parts?search=${encodeURIComponent(query)}`); 
+              }} className="flex-1 flex flex-col sm:flex-row gap-3 w-full">
+              <select value={searchYear} onChange={(e) => setSearchYear(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
+                <option value="">Select Year</option>
+                {[2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015].map(y => <option key={y} value={y}>{y}</option>)}
+              </select>
+              <select value={searchMake} onChange={(e) => setSearchMake(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
+                <option value="">Select Make</option>
+                {displayBrands.map(b => <option key={b} value={b}>{b}</option>)}
+              </select>
+              <select value={searchModel} onChange={(e) => setSearchModel(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
+                <option value="">Select Model</option>
+                <option value="Sedan">Sedan</option>
+                <option value="SUV">SUV</option>
+                <option value="Truck">Truck</option>
+                <option value="Sports">Sports</option>
+              </select>
+              <button type="submit" className="bg-neon text-accent-foreground font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg hover:bg-neon-glow transition-colors shadow-md w-full sm:w-auto">
+                Search
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="py-6 border-b border-border/50 bg-background/50">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-12 lg:gap-20">
+            <div className="flex items-center gap-3">
+              <Shield className="w-8 h-8 text-neon" />
+              <div>
+                <h4 className="font-heading font-bold text-sm uppercase text-foreground">100% Genuine Parts</h4>
+                <p className="font-body text-xs text-muted-foreground">Direct from manufacturers</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Truck className="w-8 h-8 text-neon" />
+              <div>
+                <h4 className="font-heading font-bold text-sm uppercase text-foreground">Fast Delivery</h4>
+                <p className="font-body text-xs text-muted-foreground">All across Oman</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Zap className="w-8 h-8 text-neon" />
+              <div>
+                <h4 className="font-heading font-bold text-sm uppercase text-foreground">Best Price Match</h4>
+                <p className="font-body text-xs text-muted-foreground">Guaranteed lowest prices</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 hidden sm:flex">
+              <RefreshCw className="w-8 h-8 text-neon" />
+              <div>
+                <h4 className="font-heading font-bold text-sm uppercase text-foreground">Easy Returns</h4>
+                <p className="font-body text-xs text-muted-foreground">14-day return policy</p>
+              </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Brand Ticker
       <section className="py-5 border-b border-border bg-card overflow-hidden">

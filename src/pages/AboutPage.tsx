@@ -97,27 +97,27 @@ const AboutPage = () => {
                     {/* Product 1 */}
                     <div className="flex flex-col">
                         <div className="w-full aspect-square bg-[#F4F4F4] rounded-[1.2rem] mb-2.5 flex items-center justify-center overflow-hidden"><img src="https://images.unsplash.com/photo-1552689486-f6773047d19f?auto=format&fit=crop&q=80&w=200" alt="Product 1" className="w-full h-full object-cover mix-blend-multiply" /></div>
-                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">Đ 45.00</p>
+                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">OMR 45.00</p>
                         <p className="text-[8px] font-semibold text-gray-400 mt-0.5">Oil Filter</p>
                     </div>
                     {/* Product 2 */}
                     <div className="flex flex-col relative">
                         <div className="absolute top-2 right-2 bg-[#4ADE80] text-[#111] text-[6px] font-extrabold px-1.5 py-0.5 rounded-sm z-10 tracking-wide">15%</div>
                         <div className="w-full aspect-square bg-[#F4F4F4] rounded-[1.2rem] mb-2.5 flex items-center justify-center p-3"><img src="https://images.unsplash.com/photo-1598971576404-e3505cdd0412?auto=format&fit=crop&q=80&w=200" alt="Product 2" className="w-full h-full object-contain mix-blend-multiply" /></div>
-                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">Đ 120.00 <span className="line-through text-gray-300 ml-1 font-semibold text-[8px]">Đ 140.00</span></p>
+                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">OMR 120.00 <span className="line-through text-gray-300 ml-1 font-semibold text-[8px]">OMR 140.00</span></p>
                         <p className="text-[8px] font-semibold text-gray-400 mt-0.5">LED Headlight</p>
                     </div>
                     {/* Product 3 */}
                     <div className="flex flex-col relative">
                         <div className="absolute top-2 right-2 bg-[#4ADE80] text-[#111] text-[6px] font-extrabold px-1.5 py-0.5 rounded-sm z-10 tracking-wide">30%</div>
                         <div className="w-full aspect-square bg-[#F4F4F4] rounded-[1.2rem] mb-2.5 flex items-center justify-center p-3"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=200" alt="Product 3" className="w-full h-full object-cover mix-blend-multiply" /></div>
-                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">Đ 85.00 <span className="line-through text-gray-300 ml-1 font-semibold text-[8px]">Đ 120.00</span></p>
+                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">OMR 85.00 <span className="line-through text-gray-300 ml-1 font-semibold text-[8px]">OMR 120.00</span></p>
                         <p className="text-[8px] font-semibold text-gray-400 mt-0.5">Brake Pads</p>
                     </div>
                     {/* Product 4 */}
                     <div className="flex flex-col">
                         <div className="w-full aspect-square bg-[#F4F4F4] rounded-[1.2rem] mb-2.5 flex items-center justify-center overflow-hidden"><img src="https://images.unsplash.com/photo-1616423641405-b4ebfa313c05?auto=format&fit=crop&q=80&w=200" alt="Product 4" className="w-full h-full object-cover mix-blend-multiply opacity-90" /></div>
-                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">Đ 32.00</p>
+                        <p className="text-[10px] font-extrabold text-[#111] leading-tight">OMR 32.00</p>
                         <p className="text-[8px] font-semibold text-gray-400 mt-0.5">Floor Mats</p>
                     </div>
                   </div>
