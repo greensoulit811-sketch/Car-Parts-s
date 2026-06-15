@@ -40,7 +40,8 @@ const Dashboard = () => {
     return true;
   });
 
-  const totalRevenue = orders.reduce((s, o) => s + Number(o.total), 0);
+  const revenueGeneratingOrders = orders.filter(o => o.status === 'delivered');
+  const totalRevenue = revenueGeneratingOrders.reduce((s, o) => s + Number(o.total), 0);
   const pendingOrders = orders.filter(o => o.status === 'pending').length;
   const deliveredOrders = orders.filter(o => o.status === 'delivered').length;
 
@@ -77,7 +78,7 @@ const Dashboard = () => {
   };
 
   // Revenue per order for chart
-  const revenueByOrder = orders.slice().reverse().slice(0, 10).map((o, i) => ({
+  const revenueByOrder = revenueGeneratingOrders.slice().reverse().slice(0, 10).map((o, i) => ({
     name: o.order_number || `#${i + 1}`,
     revenue: Number(o.total),
   }));

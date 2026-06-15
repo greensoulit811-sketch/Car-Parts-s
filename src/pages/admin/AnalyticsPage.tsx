@@ -37,8 +37,9 @@ const AnalyticsPage = () => {
     return list;
   }, [orders, quickFilter, startDate, endDate]);
 
-  const totalRevenue = filteredOrders.reduce((s, o) => s + Number(o.total), 0);
-  const avgOrderValue = filteredOrders.length > 0 ? totalRevenue / filteredOrders.length : 0;
+  const revenueGeneratingOrders = filteredOrders.filter(o => o.status === 'delivered');
+  const totalRevenue = revenueGeneratingOrders.reduce((s, o) => s + Number(o.total), 0);
+  const avgOrderValue = revenueGeneratingOrders.length > 0 ? totalRevenue / revenueGeneratingOrders.length : 0;
 
   // Group orders by date
   const revenueData = useMemo(() => {
@@ -46,7 +47,9 @@ const AnalyticsPage = () => {
     filteredOrders.forEach(o => {
       const date = new Date(o.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const existing = dateMap.get(date) || { revenue: 0, count: 0 };
-      existing.revenue += Number(o.total);
+      if (o.status === 'delivered') {
+        existing.revenue += Number(o.total);
+      }
       existing.count += 1;
       dateMap.set(date, existing);
     });
@@ -56,7 +59,7 @@ const AnalyticsPage = () => {
   // Top products from order items
   const topProducts = useMemo(() => {
     const productMap = new Map<string, { sales: number; revenue: number }>();
-    filteredOrders.forEach(o => {
+    revenueGeneratingOrders.forEach(o => {
       const items = (o.items as any[]) || [];
       items.forEach((item: any) => {
         const existing = productMap.get(item.productName) || { sales: 0, revenue: 0 };
