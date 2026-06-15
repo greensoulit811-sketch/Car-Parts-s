@@ -76,7 +76,7 @@ const LanguageSwitcher = () => {
       </span>
       
       {/* Dropdown */}
-      <div className={`absolute top-full right-0 mt-2 w-32 bg-background border border-border shadow-xl rounded-xl transition-all duration-300 flex flex-col py-2 z-[60] ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
+      <div className={`absolute top-full right-0 rtl:right-auto rtl:left-0 mt-2 w-32 bg-background border border-border shadow-xl rounded-xl transition-all duration-300 flex flex-col py-2 z-[60] ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
         <button 
           onClick={(e) => { e.stopPropagation(); switchLanguage('en'); }}
           className={`px-4 py-2.5 text-left text-sm hover:bg-secondary/50 hover:text-neon transition-colors ${currentLang === 'en' ? 'text-neon font-bold' : 'text-foreground'}`}
