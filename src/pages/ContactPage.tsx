@@ -45,7 +45,7 @@ const ContactPage = () => {
       {/* =========================================
           CLEAN PREMIUM HERO
           ========================================= */}
-      <div className="bg-[#F8F9FA] pt-32 lg:pt-48 pb-20 border-b border-gray-100 relative overflow-hidden">
+      <div className="bg-[#F8F9FA] pt-40 lg:pt-48 pb-20 border-b border-gray-100 relative overflow-hidden">
         {/* Soft Background Blur Elements */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[600px] h-[600px] bg-white rounded-full shadow-[0_0_100px_rgba(0,0,0,0.03)] z-0 pointer-events-none"></div>
 
