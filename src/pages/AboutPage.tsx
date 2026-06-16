@@ -22,7 +22,7 @@ const AboutPage = () => {
         {/* =========================================
             SECTION 1: HERO (Advanced & Smart)
             ========================================= */}
-        <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div className="relative pt-40 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
           {/* Background Elements */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
             <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-neon/10 blur-[120px] mix-blend-screen pointer-events-none"></div>
@@ -44,7 +44,7 @@ const AboutPage = () => {
                   <Sparkles className="w-4 h-4 text-neon" /> Premium Auto Parts
                 </div>
                 
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-[1.1]">
+                <h1 className="text-3xl md:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-[1.1]">
                   Engineered for <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon to-electric">Excellence.</span>
                 </h1>
@@ -69,9 +69,9 @@ const AboutPage = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1, delay: 0.2 }}
-                  className="absolute top-0 right-0 w-[70%] h-[70%] rounded-3xl overflow-hidden border border-border/50 shadow-2xl z-20"
+                  className="absolute top-0 right-0 w-[70%] h-[70%] rounded-xl overflow-hidden border border-border/50 shadow-2xl z-20"
                 >
-                  <img src="https://images.unsplash.com/photo-1486262715619-670810a044e1?auto=format&fit=crop&q=80" alt="Premium Engine" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img src="https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=800&q=80" alt="Premium Engine" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-md px-4 py-2 rounded-lg border border-border/50">
                     <p className="text-xs font-bold text-neon uppercase tracking-wider">Performance</p>
@@ -83,9 +83,9 @@ const AboutPage = () => {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, delay: 0.4 }}
-                  className="absolute bottom-0 left-0 w-[55%] h-[60%] rounded-3xl overflow-hidden border border-neon/30 shadow-[0_0_30px_rgba(var(--neon),0.15)] z-30"
+                  className="absolute bottom-0 left-0 w-[55%] h-[60%] rounded-xl overflow-hidden border border-neon/30 shadow-[0_0_30px_rgba(var(--neon),0.15)] z-30"
                 >
-                  <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80" alt="Brake System" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=800&q=80" alt="Brake System" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-md px-4 py-2 rounded-lg border border-border/50">
                     <p className="text-xs font-bold text-hot uppercase tracking-wider">Safety First</p>
@@ -97,7 +97,7 @@ const AboutPage = () => {
                 <motion.div 
                   animate={{ y: [0, -15, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-[20%] -left-[10%] bg-card p-4 rounded-2xl shadow-xl border border-border/50 z-40 hidden md:flex items-center gap-3 backdrop-blur-md"
+                  className="absolute top-[20%] -left-[10%] bg-card p-4 rounded-xl shadow-xl border border-border/50 z-40 hidden md:flex items-center gap-3 backdrop-blur-md"
                 >
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <Settings className="w-5 h-5 text-primary animate-spin-slow" />
@@ -116,7 +116,7 @@ const AboutPage = () => {
         {/* =========================================
             SECTION 2: STATS
             ========================================= */}
-        <div className="container mx-auto px-4 lg:px-8 -mt-8 relative z-30 mb-32">
+        <div className="container mx-auto px-4 lg:px-8 -mt-8 relative z-30 mb-20">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
               { icon: Box, count: "50K+", label: "Parts Delivered", color: "text-blue-500" },
@@ -145,7 +145,7 @@ const AboutPage = () => {
         {/* =========================================
             SECTION 3: OUR STORY (Smart Layout)
             ========================================= */}
-        <div className="container mx-auto px-4 lg:px-8 mb-32">
+        <div className="container mx-auto px-4 lg:px-8 mb-20">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             
             <div className="order-2 lg:order-1 relative">
@@ -154,18 +154,18 @@ const AboutPage = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  className="rounded-3xl overflow-hidden h-[300px] mt-12 shadow-2xl border border-border/30"
+                  className="rounded-xl overflow-hidden h-[300px] mt-6 shadow-2xl border border-border/30"
                 >
-                  <img src="https://images.unsplash.com/photo-1503375816912-308354c2514d?auto=format&fit=crop&q=80" alt="Sports Car" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                  <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80" alt="Sports Car" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
                 </motion.div>
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
-                  className="rounded-3xl overflow-hidden h-[300px] shadow-2xl border border-border/30"
+                  className="rounded-xl overflow-hidden h-[300px] shadow-2xl border border-border/30"
                 >
-                  <img src="https://images.unsplash.com/photo-1616423641405-b4ebfa313c05?auto=format&fit=crop&q=80" alt="Car Interior" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                  <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80" alt="Car Interior" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
                 </motion.div>
               </div>
               
@@ -210,7 +210,7 @@ const AboutPage = () => {
         {/* =========================================
             SECTION 4: CORE VALUES (Interactive)
             ========================================= */}
-        <div className="bg-secondary/20 py-24 border-y border-border/50 relative overflow-hidden">
+        <div className="bg-secondary/20 py-10 border-y border-border/50 relative overflow-hidden">
            {/* Decorative Background */}
            <div className="absolute right-0 top-0 w-1/3 h-full bg-[url('/assets/grid-pattern.svg')] opacity-5 pointer-events-none"></div>
 
@@ -263,7 +263,7 @@ const AboutPage = () => {
               </div>
 
               {/* Right: Dynamic Visual Display */}
-              <div className="lg:col-span-7 relative h-[500px] rounded-[3rem] overflow-hidden bg-card border border-border shadow-2xl flex items-center justify-center p-8">
+              <div className="lg:col-span-7 relative h-[500px] rounded-[1rem] overflow-hidden bg-card border border-border shadow-2xl flex items-center justify-center p-8">
                  <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-luminosity"></div>
                  
                  <motion.div 
@@ -304,16 +304,16 @@ const AboutPage = () => {
         {/* =========================================
             SECTION 5: CTA
             ========================================= */}
-        <div className="container mx-auto px-4 lg:px-8 max-w-4xl text-center mt-24 mb-10">
-          <div className="bg-gradient-to-b from-card to-background border border-border/50 p-12 md:p-16 rounded-[3rem] relative overflow-hidden shadow-2xl">
+        <div className="container mx-auto px-4 lg:px-8 text-center mt-24 mb-10">
+          <div className="bg-gradient-to-b from-card to-background border border-border/50 p-12 md:p-16 rounded-[1rem] relative overflow-hidden shadow-md">
             {/* Glows */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-neon/10 blur-[80px] rounded-full pointer-events-none"></div>
             
-            <h3 className="text-4xl md:text-5xl font-heading font-black mb-6 relative z-10">Ready to Upgrade?</h3>
-            <p className="text-xl text-muted-foreground leading-relaxed mb-10 relative z-10 max-w-2xl mx-auto">
+            <h3 className="text-3xl md:text-5xl font-heading font-black mb-6 relative z-10">Ready to Upgrade?</h3>
+            <p className="text-xl text-muted-foreground leading-relaxed mb-10 relative z-10 mx-auto">
               Whether you are repairing your daily driver or building a track monster, we have the parts to accompany you on that journey.
             </p>
-            <Link to="/parts" className="inline-flex items-center gap-3 bg-foreground text-background px-12 py-5 rounded-2xl font-bold tracking-widest uppercase hover:bg-primary hover:text-primary-foreground transition-all shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_40px_rgba(var(--primary),0.4)] hover:-translate-y-1 relative z-10">
+            <Link to="/parts" className="inline-flex items-center gap-3 bg-foreground text-background px-8 py-4 rounded-xl font-bold tracking-widest uppercase hover:bg-primary hover:text-primary-foreground transition-all shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_40px_rgba(var(--primary),0.4)] hover:-translate-y-1 relative z-10">
               Shop Parts Now <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
