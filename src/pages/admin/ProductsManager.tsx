@@ -22,7 +22,7 @@ const emptyForm = {
   name: '', brand: '', price: 0, original_price: null as number | null, category: 'running',
   image: '', images: [] as string[], sku: '',
   sizes: '', colors: '', description: '', stock: 50,
-  is_active: true, is_trending: false, is_new: false,
+  is_active: true, is_trending: false, is_new: false, is_offer: false,
 };
 
 const ProductsManager = () => {
@@ -102,7 +102,7 @@ const ProductsManager = () => {
       sku: (p as any).sku || '',
       sizes: (p.sizes || []).join(', '), colors: (p.colors || []).join(', '),
       description: p.description || '', stock: p.stock || 50,
-      is_active: p.is_active ?? true, is_trending: p.is_trending ?? false, is_new: p.is_new ?? false,
+      is_active: p.is_active ?? true, is_trending: p.is_trending ?? false, is_new: p.is_new ?? false, is_offer: (p as any).is_offer ?? false,
     });
     setShowForm(true);
   };
@@ -207,7 +207,7 @@ const ProductsManager = () => {
       sizes: sizesFinal,
       colors: colorsFinal,
       description: form.description, stock: form.stock,
-      is_active: form.is_active, is_trending: form.is_trending, is_new: form.is_new,
+      is_active: form.is_active, is_trending: form.is_trending, is_new: form.is_new, is_offer: form.is_offer,
     };
 
     try {
@@ -526,6 +526,10 @@ const ProductsManager = () => {
                   <label className="flex items-center gap-2 font-body text-sm text-foreground">
                     <Switch checked={form.is_new} onCheckedChange={v => setForm({ ...form, is_new: v })} />
                     New Arrival
+                  </label>
+                  <label className="flex items-center gap-2 font-body text-sm text-foreground">
+                    <Switch checked={form.is_offer} onCheckedChange={v => setForm({ ...form, is_offer: v })} />
+                    Offer Product
                   </label>
                 </div>
               </div>

@@ -14,6 +14,7 @@ export interface Product {
   reviews: number;
   isTrending?: boolean;
   isNew?: boolean;
+  isOffer?: boolean;
 }
 
 export const products: Product[] = [

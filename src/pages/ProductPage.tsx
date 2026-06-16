@@ -35,7 +35,7 @@ const ProductPage = () => {
     category: p.category as any, image: p.image,
     images: p.images || [p.image], sizes: p.sizes || [], colors: p.colors || [],
     description: p.description || '', rating: Number(p.rating) || 4.5,
-    reviews: p.reviews || 0, isTrending: p.is_trending || false, isNew: p.is_new || false,
+    reviews: p.reviews || 0, isTrending: p.is_trending || false, isNew: p.is_new || false, isOffer: (p as any).is_offer || false,
   })), [dbProducts]);
 
   const product = allProducts.find(p => p.id === id);

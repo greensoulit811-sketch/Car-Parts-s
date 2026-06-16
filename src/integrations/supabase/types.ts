@@ -357,6 +357,7 @@ export type Database = {
           images: string[] | null
           is_active: boolean | null
           is_new: boolean | null
+          is_offer: boolean | null
           is_trending: boolean | null
           name: string
           original_price: number | null
@@ -379,6 +380,7 @@ export type Database = {
           images?: string[] | null
           is_active?: boolean | null
           is_new?: boolean | null
+          is_offer?: boolean | null
           is_trending?: boolean | null
           name: string
           original_price?: number | null
@@ -401,6 +403,7 @@ export type Database = {
           images?: string[] | null
           is_active?: boolean | null
           is_new?: boolean | null
+          is_offer?: boolean | null
           is_trending?: boolean | null
           name?: string
           original_price?: number | null

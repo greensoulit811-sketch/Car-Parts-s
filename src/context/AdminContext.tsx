@@ -15,6 +15,7 @@ export interface AdminProduct {
   isActive: boolean;
   isTrending: boolean;
   isNew: boolean;
+  isOffer: boolean;
   createdAt: string;
 }
 

@@ -94,10 +94,6 @@ const Navbar = () => {
                 {t('footer.about')}
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neon transition-all duration-300 group-hover:w-full rounded-full"></span>
               </Link>
-              <Link to="/careers" className="relative py-2 group transition-colors duration-300 hover:text-foreground">
-                CAREERS
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neon transition-all duration-300 group-hover:w-full rounded-full"></span>
-              </Link>
               <Link to="/contact" className="relative py-2 group transition-colors duration-300 hover:text-foreground">
                 {t('footer.contact')}
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neon transition-all duration-300 group-hover:w-full rounded-full"></span>
@@ -193,7 +189,6 @@ const Navbar = () => {
                   </Link>
                 ))}
                 <Link to="/about" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.about')}</Link>
-                <Link to="/careers" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">Careers</Link>
                 <Link to="/contact" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.contact')}</Link>
                 
                 {user ? (

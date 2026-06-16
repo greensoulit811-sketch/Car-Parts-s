@@ -6,8 +6,11 @@ import { useActiveCategories } from '@/hooks/useCategories';
 import { usePageContent } from '@/hooks/usePageContents';
 import { useLanguage } from '@/context/LanguageContext';
 import ProductCard from '@/components/ProductCard';
+import OfferProductCard from '@/components/OfferProductCard';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 // Use an optimized, highly compressed external image for the fallback hero instead of a 520KB local asset to boost LCP
@@ -42,11 +45,12 @@ const Index = () => {
     category: p.category as any, image: p.image, images: p.images || [p.image],
     sizes: p.sizes || [], colors: p.colors || [], description: p.description || '',
     rating: Number(p.rating) || 4.5, reviews: p.reviews || 0,
-    isTrending: p.is_trending || false, isNew: p.is_new || false,
+    isTrending: p.is_trending || false, isNew: p.is_new || false, isOffer: (p as any).is_offer || false,
   }));
   const dynamicBrands = Array.from(new Set(products.map(p => p.brand.trim().toUpperCase()))).filter(Boolean).sort();
   const trendingProducts = products.filter(p => p.isTrending);
   const newProducts = products.filter(p => p.isNew);
+  const offerProducts = products.filter(p => p.isOffer);
   const [email, setEmail] = useState('');
   const isLoading = productsLoading || categoriesLoading || bannersLoading;
 
@@ -54,6 +58,10 @@ const Index = () => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const categoryScrollRef1 = useRef<HTMLDivElement>(null);
   const categoryScrollRef2 = useRef<HTMLDivElement>(null);
+
+  const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start' }, [
+    Autoplay({ delay: 3000, stopOnInteraction: false })
+  ]);
 
   // Auto-scroll logic for categories
   useEffect(() => {
@@ -288,7 +296,7 @@ const Index = () => {
       </section>
 
       {/* Trust Badges */}
-      <section className="py-6 border-b border-border/50 bg-background/50">
+      {/* <section className="py-6 border-b border-border/50 bg-background/50">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-y-6 gap-x-2 md:gap-12 lg:gap-20">
             <div className="flex items-center justify-center md:justify-start gap-2 md:gap-3">
@@ -323,7 +331,7 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Brand Ticker
       <section className="py-5 border-b border-border bg-card overflow-hidden">
@@ -381,6 +389,40 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Offer Products */}
+      {offerProducts.length > 0 && (
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <span className="text-neon font-body text-sm font-bold tracking-[0.1em] uppercase">Special Offers</span>
+                <h2 className="heading-display text-xl md:text-2xl font-bold mt-1 text-foreground">Offer Products</h2>
+              </div>
+              <Link to="/parts" className="flex items-center gap-2 font-body text-sm font-semibold tracking-widers text-foreground hover-neon transition-colors">
+                {t('trending.view_all')} <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex -ml-4">
+                {productsLoading ? (
+                   Array.from({ length: 2 }).map((_, i) => (
+                     <div key={i} className="flex-none w-full md:w-1/2 pl-4">
+                       <div className="bg-card border border-border rounded-lg h-[200px] animate-pulse"></div>
+                     </div>
+                   ))
+                ) : (
+                  offerProducts.map(product => (
+                    <div key={product.id} className="flex-none w-full md:w-1/2 pl-4">
+                      <OfferProductCard product={product} />
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Trending Products */}
       <section className="py-8 bg-card">
