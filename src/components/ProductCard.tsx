@@ -86,6 +86,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
               </>
             )}
           </div>
+
+          <div className="mt-2 text-[11px] font-medium text-muted-foreground flex items-center gap-1.5">
+            <span className={`w-1.5 h-1.5 rounded-full ${(product.stock || 0) > 10 ? 'bg-green-500' : (product.stock || 0) > 0 ? 'bg-orange-500' : 'bg-red-500'}`}></span>
+            {(product.stock || 0) > 0 ? `In Stock: ${product.stock}` : 'Out of Stock'}
+          </div>
         </div>
       </Link>
     </motion.div>

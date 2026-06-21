@@ -45,7 +45,7 @@ const DealerLoginPage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <div className="flex-grow flex items-center justify-center py-24 px-4 sm:px-6 lg:px-8 mt-10">
+      <div className="flex-grow flex items-center justify-center py-36 px-4 sm:px-6 lg:px-8 mt-10">
         <div className="max-w-md w-full space-y-8 bg-card p-8 rounded-xl border border-border shadow-lg">
           <div>
             <div className="flex justify-center mb-4 text-primary">

@@ -14,6 +14,7 @@ export interface Product {
   description: string;
   rating: number;
   reviews: number;
+  stock?: number;
   isTrending?: boolean;
   isNew?: boolean;
   isOffer?: boolean;

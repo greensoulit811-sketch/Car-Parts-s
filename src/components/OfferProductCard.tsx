@@ -100,18 +100,16 @@ const OfferProductCard = ({ product }: OfferProductCardProps) => {
             )}
           </div>
           
-          {/* Progress / Urgency Bar */}
           <div className="pt-2 border-t border-border/60">
-            <div className="flex justify-between items-center mb-1.5">
-              <span className="text-[10px] font-bold text-destructive flex items-center gap-1 uppercase tracking-wider">
-                <Clock className="w-3 h-3" /> Limited Time
-              </span>
-              <span className="text-[10px] font-medium text-muted-foreground">Ends soon</span>
+            <div className="flex justify-between items-center mb-1 text-xs">
+              <span className="font-bold text-foreground">{(product.stock || 0) > 0 ? `In Stock: ${product.stock}` : 'Out of Stock'}</span>
+              <span className="text-muted-foreground">{product.stock || 0} left</span>
             </div>
-            <div className="w-full bg-secondary rounded-full h-1.5 overflow-hidden">
-              <div className="bg-destructive h-1.5 rounded-full w-[85%] relative overflow-hidden">
-                <div className="absolute inset-0 bg-white/20 w-full animate-[marquee_2s_linear_infinite]" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)' }}></div>
-              </div>
+            <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+              <div 
+                className={`h-full ${(product.stock || 0) > 10 ? 'bg-green-500' : (product.stock || 0) > 0 ? 'bg-orange-500' : 'bg-red-500'} rounded-full`} 
+                style={{ width: `${Math.min(((product.stock || 0) / 50) * 100, 100)}%` }}
+              ></div>
             </div>
           </div>
         </div>

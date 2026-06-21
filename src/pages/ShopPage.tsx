@@ -32,6 +32,7 @@ const ShopPage = () => {
       dealerPrice: p.dealer_price ? Number(p.dealer_price) : undefined,
       dealerOriginalPrice: p.dealer_original_price ? Number(p.dealer_original_price) : undefined,
       category: p.category as any, image: p.image, images: p.images || [p.image],
+      stock: p.stock || 0,
       sizes: p.sizes || [], colors: p.colors || [], description: p.description || '',
       rating: Number(p.rating) || 4.5, reviews: p.reviews || 0,
       isTrending: p.is_trending || false, isNew: p.is_new || false, isOffer: (p as any).is_offer || false,
@@ -103,7 +104,6 @@ const ShopPage = () => {
               </h1>
             </motion.div>
           </div>
-          <div>suhan<div>
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 py-10">

@@ -8,6 +8,7 @@ import { useCheckoutLeadAutoSave } from '@/hooks/useCheckoutLeads';
 import { useFacebookTracking } from '@/hooks/useFacebookTracking';
 import { useShippingMethods } from '@/hooks/useShippingMethods';
 import { useLanguage } from '@/context/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -124,6 +125,17 @@ const CheckoutPage = () => {
         notes: `${form.notes}${selectedShipping ? `\nShipping: ${selectedShipping.name} (${shippingCharge === 0 ? 'Free' : 'OMR ' + shippingCharge})` : ''}${appliedCoupon ? `\nCoupon Applied: ${appliedCoupon.code} (-OMR ${discountAmount.toFixed(2)})` : ''}`,
       });
       await markLeadCompleted();
+
+      // Decrease stock for each item
+      for (const item of items) {
+        if (item.product.id) {
+          const { data: currentProduct } = await supabase.from('products').select('stock').eq('id', item.product.id).single();
+          if (currentProduct && typeof currentProduct.stock === 'number') {
+            await supabase.from('products').update({ stock: Math.max(0, currentProduct.stock - item.quantity) }).eq('id', item.product.id);
+          }
+        }
+      }
+
       setOrderId(orderNumber);
       fbTrackPurchase({
         content_ids: items.map(i => i.product.id), value: total,

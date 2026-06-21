@@ -15,10 +15,12 @@ const Navbar = () => {
   const { data: categories = [] } = useActiveCategories();
   const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { data: settings } = useSettings();
   const { user, signOut } = useAuth();
+  const [isCustomer, setIsCustomer] = useState(() => localStorage.getItem('role') === 'customer');
 
   const navigate = useNavigate();
   const s = Array.isArray(settings) ? settings[0] || {} : settings || {};
@@ -151,11 +153,40 @@ const Navbar = () => {
                     </button>
                   </div>
                 </div>
-              ) : (
-                <Link to="/dealer/login" className="hidden md:flex items-center justify-center px-6 py-2.5 rounded-full bg-foreground text-background hover:bg-neon hover:text-accent-foreground transition-all duration-300 shadow-sm hover:shadow-neon/20 font-bold text-[11px] uppercase tracking-widest">
-                  <UserIcon className="w-4 h-4 mr-2" />
-                  <span>Dealer Login</span>
-                </Link>
+              ) : !isCustomer && (
+                <div className="hidden md:block relative group">
+                  <button className="flex items-center justify-center px-6 py-2.5 rounded-full bg-foreground text-background group-hover:bg-neon group-hover:text-accent-foreground transition-all duration-300 shadow-sm group-hover:shadow-neon/20 font-bold text-[11px] uppercase tracking-widest">
+                    <UserIcon className="w-4 h-4 mr-2" />
+                    <span>Login</span>
+                    <ChevronDown className="w-3 h-3 ml-1" />
+                  </button>
+                  
+                  <div className="absolute top-full right-0 mt-2 w-52 bg-background border border-border shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col p-2 z-50">
+                    <p className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Select Role</p>
+                    
+                    <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); navigate('/parts'); }} className="flex items-center gap-3 w-full text-left px-3 py-2.5 rounded-lg hover:bg-secondary/80 transition-colors group/item">
+                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                         <ShoppingCart className="w-4 h-4 text-primary" />
+                       </div>
+                       <div>
+                         <p className="text-xs font-bold text-foreground">Customer</p>
+                         <p className="text-[10px] text-muted-foreground">Shop without login</p>
+                       </div>
+                    </button>
+                    
+                    <div className="h-px w-full bg-border/50 my-1"></div>
+                    
+                    <button onClick={() => navigate('/dealer/login')} className="flex items-center gap-3 w-full text-left px-3 py-2.5 rounded-lg hover:bg-neon/10 transition-colors group/item">
+                       <div className="w-8 h-8 rounded-full bg-neon/10 flex items-center justify-center">
+                         <ShieldCheck className="w-4 h-4 text-neon" />
+                       </div>
+                       <div>
+                         <p className="text-xs font-bold text-foreground">Dealer</p>
+                         <p className="text-[10px] text-muted-foreground">Wholesale portal</p>
+                       </div>
+                    </button>
+                  </div>
+                </div>
               )}
               
               <button aria-label="Toggle mobile menu" className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-secondary/50 text-foreground transition-colors ml-1" onClick={() => setMobileOpen(!mobileOpen)}>
@@ -196,10 +227,15 @@ const Navbar = () => {
                       <LogOut className="w-5 h-5" /> Logout
                     </button>
                   </div>
-                ) : (
-                  <Link to="/dealer/login" onClick={() => setMobileOpen(false)} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 mt-6 font-bold uppercase tracking-wider shadow-lg">
-                    <UserIcon className="w-5 h-5" /> Dealer Login
-                  </Link>
+                ) : !isCustomer && (
+                  <div className="flex flex-col gap-3 mt-6">
+                    <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider">
+                      <ShoppingCart className="w-5 h-5" /> Continue as Customer
+                    </button>
+                    <button onClick={() => { setMobileOpen(false); navigate('/dealer/login'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider shadow-lg">
+                      <ShieldCheck className="w-5 h-5" /> Dealer Login
+                    </button>
+                  </div>
                 )}
 
               </div>

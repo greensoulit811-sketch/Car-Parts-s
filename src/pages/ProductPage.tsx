@@ -39,6 +39,7 @@ const ProductPage = () => {
     dealerPrice: p.dealer_price ? Number(p.dealer_price) : undefined,
     dealerOriginalPrice: p.dealer_original_price ? Number(p.dealer_original_price) : undefined,
     category: p.category as any, image: p.image,
+    stock: p.stock || 0,
     images: p.images || [p.image], sizes: p.sizes || [], colors: p.colors || [],
     description: p.description || '', rating: Number(p.rating) || 4.5,
     reviews: p.reviews || 0, isTrending: p.is_trending || false, isNew: p.is_new || false, isOffer: (p as any).is_offer || false,
@@ -62,6 +63,7 @@ const ProductPage = () => {
   const basePrice = isDealer && product?.dealerPrice != null ? product.dealerPrice : product?.price;
   const displayPrice = selectedVariation?.price ? Number(selectedVariation.price) : basePrice || 0;
   const variationStock = selectedVariation ? selectedVariation.stock : null;
+  const currentStock = variationStock !== null ? variationStock : product?.stock;
 
   useEffect(() => {
     if (product) {
@@ -103,7 +105,7 @@ const ProductPage = () => {
   const validateSelection = () => {
     if (product.sizes.length > 0 && !selectedSize) { toast.error(t('product.select_size_error')); return false; }
     if (product.colors.length > 0 && !selectedColor) { toast.error(t('product.select_color_error')); return false; }
-    if (variationStock !== null && variationStock <= 0) { toast.error(t('product.out_of_stock_error')); return false; }
+    if ((currentStock || 0) <= 0) { toast.error(t('product.out_of_stock_error')); return false; }
     return true;
   };
 
@@ -184,9 +186,9 @@ const ProductPage = () => {
                 )}
               </div>
 
-              {variationStock !== null && (
-                <p className={`font-body text-sm mb-4 ${variationStock > 0 ? 'text-green-600' : 'text-destructive'}`}>
-                  {variationStock > 0 ? `${variationStock} ${t('product.in_stock')}` : t('product.out_of_stock')}
+              {currentStock !== undefined && (
+                <p className={`font-body text-sm mb-4 ${(currentStock || 0) > 0 ? 'text-green-600' : 'text-destructive'}`}>
+                  {(currentStock || 0) > 0 ? `${currentStock} ${t('product.in_stock')}` : t('product.out_of_stock')}
                 </p>
               )}
 
@@ -227,9 +229,9 @@ const ProductPage = () => {
                   <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-12 flex items-center justify-center hover:bg-card transition-colors"><Plus className="w-4 h-4" /></button>
                 </div>
                 <button onClick={handleAddToCart}
-                  disabled={variationStock !== null && variationStock <= 0}
+                  disabled={(currentStock || 0) <= 0}
                   className="flex-1 min-w-[150px] h-12 bg-neon text-accent-foreground font-body text-sm font-bold tracking-wider uppercase hover:bg-neon-glow transition-all duration-300 glow-neon rounded-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                  {variationStock !== null && variationStock <= 0 ? t('product.out_of_stock') : t('product.add_to_cart')}
+                  {(currentStock || 0) <= 0 ? t('product.out_of_stock') : t('product.add_to_cart')}
                 </button>
                 <button onClick={() => toggleWishlist(product.id)}
                   className={`w-12 h-12 border flex items-center justify-center rounded-sm transition-all ${wishlisted ? 'border-neon bg-neon/10' : 'border-border hover:border-neon/50'}`}>
@@ -238,7 +240,7 @@ const ProductPage = () => {
               </div>
 
               <button onClick={handleBuyNow}
-                disabled={variationStock !== null && variationStock <= 0}
+                disabled={(currentStock || 0) <= 0}
                 className="w-full h-12 bg-foreground text-background font-body text-sm font-bold tracking-wider uppercase hover:bg-foreground/90 transition-all duration-300 rounded-sm disabled:opacity-50 disabled:cursor-not-allowed mb-3">
                 {t('product.buy_now')}
               </button>
