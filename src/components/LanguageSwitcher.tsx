@@ -55,7 +55,7 @@ const LanguageSwitcher = () => {
 
   return (
     <div 
-      className="relative flex items-center cursor-pointer ml-1 notranslate"
+      className="relative flex items-center cursor-pointer notranslate"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >

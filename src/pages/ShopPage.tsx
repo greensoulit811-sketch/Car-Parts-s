@@ -58,6 +58,7 @@ const ShopPage = () => {
   const setCategory = (cat: string) => {
     if (cat) setSearchParams({ category: cat });
     else setSearchParams({});
+    setShowFilters(false);
   };
 
   const [visibleCount, setVisibleCount] = useState(12);

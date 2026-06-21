@@ -85,7 +85,7 @@ const Navbar = () => {
             </Link>
 
             {/* Navigation Links - Centered */}
-            <div className="hidden lg:flex items-center gap-8 font-body text-[13px] tracking-[0.15em] uppercase font-bold text-foreground/80 absolute left-1/2 -translate-x-1/2">
+            <div className="hidden lg:flex items-center gap-8 font-body text-[18px] tracking-[0.1em] font-bold text-foreground/80 absolute left-1/2 -translate-x-1/2">
               <Link to="/" className="relative py-2 group transition-colors duration-300 hover:text-foreground">
                 {t('nav.home')}
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neon transition-all duration-300 group-hover:w-full rounded-full"></span>
@@ -136,7 +136,7 @@ const Navbar = () => {
 
               <LanguageSwitcher />
 
-              <div className="hidden md:block w-px h-6 bg-border mx-1"></div>
+              <div className="hidden md:block w-px h-6 bg-border"></div>
 
               {user ? (
                 <div className="hidden md:flex items-center gap-2 group cursor-pointer relative">
@@ -204,20 +204,15 @@ const Navbar = () => {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="lg:hidden bg-background/95 backdrop-blur-2xl border-t border-border overflow-hidden absolute top-full left-0 w-full shadow-2xl"
+              className="lg:hidden bg-background/95 backdrop-blur-2xl border-t border-border overflow-hidden absolute top-full left-0 w-full shadow-md"
             >
-              <div className="flex flex-col px-6 py-6 gap-2 font-body text-sm tracking-widest uppercase font-bold text-foreground">
+              <div className="flex flex-col px-6 py-6 gap-2 font-body text-sm tracking-widest font-bold text-foreground">
                 <Link to="/" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40 flex items-center justify-between">
                   {t('nav.home')}
                 </Link>
                 <Link to="/parts" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40 flex items-center justify-between">
                   {t('nav.parts')}
                 </Link>
-                {topCategories.map(cat => (
-                  <Link key={cat.id} to={`/parts?category=${cat.slug}`} onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40 pl-4 text-muted-foreground text-xs">
-                    • {cat.name}
-                  </Link>
-                ))}
                 <Link to="/about" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.about')}</Link>
                 <Link to="/contact" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.contact')}</Link>
                 

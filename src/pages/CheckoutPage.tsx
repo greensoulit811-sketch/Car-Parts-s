@@ -287,7 +287,7 @@ const CheckoutPage = () => {
             <span className="text-muted-foreground">
               {items.reduce((s, i) => s + i.quantity, 0)} {t('checkout.items_count')}
             </span>
-            <span className="font-bold text-blue-500 flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{total.toFixed(3)}</span>
+            <span className="font-bold text-blue-500 flex items-center"><DirhamIcon className="w-[3em] mr-1" />{total.toFixed(3)}</span>
           </div>
         </div>
       </div>

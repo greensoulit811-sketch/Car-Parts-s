@@ -52,7 +52,7 @@ const StepReview = ({ form, items, cartTotal, shippingName, shippingCharge, tota
         </div>
         <div className="flex items-center justify-between font-body text-sm">
           <span className="text-foreground">{shippingName}</span>
-          <span className="font-bold text-primary flex items-center">{shippingCharge === 0 ? t('cart.free') : <><DirhamIcon className="w-[1.2em] mr-1" />{shippingCharge.toFixed(3)}</>}</span>
+          <span className="font-bold text-primary flex items-center">{shippingCharge === 0 ? t('cart.free') : <><DirhamIcon className="w-[3em] mr-1" />{shippingCharge.toFixed(3)}</>}</span>
         </div>
         <p className="font-body text-xs text-muted-foreground mt-1">{t('checkout.cod')}</p>
       </div>
@@ -71,7 +71,7 @@ const StepReview = ({ form, items, cartTotal, shippingName, shippingCharge, tota
               <div className="flex-1 min-w-0">
                 <p className="font-body text-xs font-bold truncate text-foreground">{item.product.name}</p>
                 <p className="font-body text-xs text-muted-foreground">{t('size')} {item.size} · {item.color} · x{item.quantity}</p>
-                <p className="font-body text-xs font-bold text-blue-500 flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{(item.product.price * item.quantity).toFixed(2)}</p>
+                <p className="font-body text-xs font-bold text-blue-500 flex items-center"><DirhamIcon className="w-2em] mr-1" />{(item.product.price * item.quantity).toFixed(2)}</p>
               </div>
             </div>
           ))}
@@ -82,11 +82,11 @@ const StepReview = ({ form, items, cartTotal, shippingName, shippingCharge, tota
       <div className="border-t border-border pt-4 space-y-2 font-body text-sm">
         <div className="flex justify-between">
           <span className="text-muted-foreground">{t('cart.subtotal')}</span>
-          <span className="flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{cartTotal.toFixed(2)}</span>
+          <span className="flex items-center"><DirhamIcon className="w-[3em] mr-1" />{cartTotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-muted-foreground">{t('cart.shipping')}</span>
-          <span className="flex items-center">{shippingCharge === 0 ? t('cart.free') : <><DirhamIcon className="w-[1.2em] mr-1" />{shippingCharge.toFixed(3)}</>}</span>
+          <span className="flex items-center">{shippingCharge === 0 ? t('cart.free') : <><DirhamIcon className="w-[3em] mr-1" />{shippingCharge.toFixed(3)}</>}</span>
         </div>
         {appliedCoupon && (
           <div className="flex justify-between text-green-600">
@@ -96,7 +96,7 @@ const StepReview = ({ form, items, cartTotal, shippingName, shippingCharge, tota
         )}
         <div className="flex justify-between font-heading text-xl font-bold border-t border-border pt-3 text-foreground">
           <span>{t('cart.total')}</span>
-          <span className="text-blue-500 font-bold flex items-center"><DirhamIcon className="w-[1.2em] mr-1" />{total.toFixed(3)}</span>
+          <span className="text-blue-500 font-bold flex items-center"><DirhamIcon className="w-[3em] mr-1" />{total.toFixed(3)}</span>
         </div>
       </div>
     </div>
