@@ -14,7 +14,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 // Use an optimized, highly compressed external image for the fallback hero instead of a 520KB local asset to boost LCP
-const heroImage = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80";
+const heroImage = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80";
 const fallbackImage = heroImage;
 
 // Automotive Brands
@@ -153,11 +153,17 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:h-[550px] xl:h-[750px]">
             {/* Main Slider (Left) */}
             <div className={`relative w-full h-[400px] lg:h-full overflow-hidden  ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+              {/* Unconditionally render the preloaded fallback image to ensure instant LCP */}
+              <div className="absolute inset-0">
+                <img src={heroImage} alt="Premium Auto Parts" fetchPriority="high" decoding="sync" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
+              </div>
+
               {heroBanners.length > 0 ? (
                 <>
                   <AnimatePresence mode="wait">
                     <motion.div key={currentBanner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} className="absolute inset-0">
-                      <img src={heroBanners[currentBanner].image_url} alt={heroBanners[currentBanner].title} fetchPriority="high" decoding="async" className="w-full h-full object-cover" />
+                      <img src={heroBanners[currentBanner].image_url} alt={heroBanners[currentBanner].title} fetchPriority="low" decoding="async" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
                     </motion.div>
                   </AnimatePresence>
@@ -203,14 +209,6 @@ const Index = () => {
                 </>
               ) : (
                 <>
-                  <div className="absolute inset-0">
-                    {bannersLoading ? (
-                      <div className="w-full h-full bg-secondary/20 animate-pulse" />
-                    ) : (
-                      <img src={heroImage} alt="Athletic running shoes in action" fetchPriority="high" className="w-full h-full object-cover" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
-                  </div>
                   <div className="absolute inset-0 p-5 md:p-16 flex flex-col justify-center z-10 text-primary-foreground pointer-events-none">
                     <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="container mx-auto px-2 lg:px-12 pointer-events-auto">
                       <div className="bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/10 max-w-xl inline-block shadow-2xl">

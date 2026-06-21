@@ -52,7 +52,6 @@ const ContactPage = lazy(() => import("./pages/ContactPage.tsx"));
 const CareersPage = lazy(() => import("./pages/CareersPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const DealerLoginPage = lazy(() => import("./pages/DealerLoginPage.tsx"));
-const DealerRegisterPage = lazy(() => import("./pages/DealerRegisterPage.tsx"));
 
 
 const queryClient = new QueryClient();
@@ -87,7 +86,7 @@ const App = () => (
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/careers" element={<CareersPage />} />
                   <Route path="/dealer/login" element={<DealerLoginPage />} />
-                  <Route path="/dealer/register" element={<DealerRegisterPage />} />
+                  <Route path="/dealer/register" element={<DealerLoginPage />} />
 
                   <Route path="/admin/login" element={<AdminLoginPage />} />
                   <Route path="/admin" element={

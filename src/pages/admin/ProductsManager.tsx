@@ -370,7 +370,7 @@ const ProductsManager = () => {
                   <div className="space-y-4 border border-border/50 bg-background/50 p-4 rounded-md">
                     <h4 className="font-heading text-xs uppercase tracking-wider font-bold text-foreground mb-2 pb-2 border-b border-border/50">Single Customer</h4>
                     <div>
-                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Regular Price (<DirhamIcon className="w-3 h-3" />) *</label>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Selling Price (<DirhamIcon className="w-3 h-3" />) *</label>
                       <Input type="number" step="0.01" value={form.price || ''} onChange={e => {
                         const newPrice = +e.target.value;
                         const newForm = { ...form, price: newPrice };
@@ -382,16 +382,16 @@ const ProductsManager = () => {
                       }} required />
                     </div>
                     <div>
-                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Discount Price (<DirhamIcon className="w-3 h-3" />)</label>
-                      <Input type="number" step="0.01" value={form.original_price || ''} onChange={e => setForm({ ...form, original_price: e.target.value ? +e.target.value : null })} placeholder="Original before discount" />
-                      <p className="font-body text-xs text-muted-foreground mt-1">Set original price here if on sale</p>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Old Price / Strikethrough (<DirhamIcon className="w-3 h-3" />)</label>
+                      <Input type="number" step="0.01" value={form.original_price || ''} onChange={e => setForm({ ...form, original_price: e.target.value ? +e.target.value : null })} placeholder="e.g. 15 (will show as crossed out)" />
+                      <p className="font-body text-xs text-muted-foreground mt-1">Set this higher than selling price to show a sale</p>
                     </div>
                   </div>
 
                   <div className="space-y-4 border border-border/50 bg-background/50 p-4 rounded-md">
                     <h4 className="font-heading text-xs uppercase tracking-wider font-bold text-foreground mb-2 pb-2 border-b border-border/50">Dealer</h4>
                     <div>
-                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Dealer Price (<DirhamIcon className="w-3 h-3" />)</label>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Dealer Selling Price (<DirhamIcon className="w-3 h-3" />)</label>
                       <Input type="number" step="0.01" value={form.dealer_price || ''} onChange={e => {
                         const dp = e.target.value ? +e.target.value : null;
                         setForm({ ...form, dealer_price: dp });
@@ -416,9 +416,9 @@ const ProductsManager = () => {
                       }} placeholder="Auto-calculates Dealer Price" />
                     </div>
                     <div>
-                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Dealer Discount Price (<DirhamIcon className="w-3 h-3" />)</label>
-                      <Input type="number" step="0.01" value={form.dealer_original_price || ''} onChange={e => setForm({ ...form, dealer_original_price: e.target.value ? +e.target.value : null })} placeholder="Original price for dealers" />
-                      <p className="font-body text-xs text-muted-foreground mt-1">If empty, falls back to Single Customer Discount Price</p>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Dealer Old Price / Strikethrough (<DirhamIcon className="w-3 h-3" />)</label>
+                      <Input type="number" step="0.01" value={form.dealer_original_price || ''} onChange={e => setForm({ ...form, dealer_original_price: e.target.value ? +e.target.value : null })} placeholder="Old price for dealers" />
+                      <p className="font-body text-xs text-muted-foreground mt-1">If empty, falls back to Single Customer Old Price</p>
                     </div>
                   </div>
                 </div>
