@@ -50,9 +50,7 @@ const AboutPage = lazy(() => import("./pages/AboutPage.tsx"));
 const ContactPage = lazy(() => import("./pages/ContactPage.tsx"));
 const CareersPage = lazy(() => import("./pages/CareersPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
-const Login = lazy(() => import("./pages/Login.tsx"));
-const Register = lazy(() => import("./pages/Register.tsx"));
-const Profile = lazy(() => import("./pages/Profile.tsx"));
+
 
 const queryClient = new QueryClient();
 
@@ -85,9 +83,7 @@ const App = () => (
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/careers" element={<CareersPage />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/profile" element={<Profile />} />
+
                   <Route path="/admin/login" element={<AdminLoginPage />} />
                   <Route path="/admin" element={
                     <ProtectedAdminRoute>
