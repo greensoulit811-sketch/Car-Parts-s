@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product } from '@/data/products';
+import { useAuth } from '@/context/AuthContext';
 
 export interface CartItem {
   product: Product;
@@ -34,6 +35,9 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
+  const isDealer = !!user;
+
   const [items, setItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
@@ -83,7 +87,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isInWishlist = useCallback((productId: string) => wishlist.includes(productId), [wishlist]);
 
-  const cartTotal = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+  const cartTotal = items.reduce((sum, i) => {
+    const activePrice = isDealer && i.product.dealerPrice != null ? i.product.dealerPrice : i.product.price;
+    return sum + activePrice * i.quantity;
+  }, 0);
+  
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
   const applyCoupon = useCallback((coupon: AppliedCoupon) => {

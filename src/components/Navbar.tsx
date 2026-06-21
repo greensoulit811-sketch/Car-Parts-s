@@ -5,6 +5,7 @@ import { useActiveCategories } from '@/hooks/useCategories';
 import { useLanguage } from '@/context/LanguageContext';
 import { useState, useEffect } from 'react';
 import { useSettings } from '@/hooks/useDatabase';
+import { useAuth } from '@/context/AuthContext';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -17,6 +18,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { data: settings } = useSettings();
+  const { user, signOut } = useAuth();
 
   const navigate = useNavigate();
   const s = Array.isArray(settings) ? settings[0] || {} : settings || {};
@@ -134,7 +136,27 @@ const Navbar = () => {
 
               <div className="hidden md:block w-px h-6 bg-border mx-1"></div>
 
-
+              {user ? (
+                <div className="hidden md:flex items-center gap-2 group cursor-pointer relative">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-secondary/50 hover:bg-secondary text-foreground transition-all duration-300 hover:text-neon">
+                    <UserIcon className="w-[18px] h-[18px]" />
+                  </div>
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-background border border-border shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col py-2 z-50">
+                    <div className="px-5 py-2 border-b border-border/40 mb-1">
+                      <p className="font-body text-xs text-muted-foreground uppercase tracking-widest">Signed in as</p>
+                      <p className="font-body font-bold text-sm truncate">{user.user_metadata?.full_name || 'Dealer'}</p>
+                    </div>
+                    <button onClick={() => signOut()} className="px-5 py-2.5 hover:bg-red-50 text-red-500 transition-colors text-[13px] font-body font-medium flex items-center gap-2 text-left w-full">
+                      <LogOut className="w-4 h-4" /> Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link to="/dealer/login" className="hidden md:flex items-center justify-center px-6 py-2.5 rounded-full bg-foreground text-background hover:bg-neon hover:text-accent-foreground transition-all duration-300 shadow-sm hover:shadow-neon/20 font-bold text-[11px] uppercase tracking-widest">
+                  <UserIcon className="w-4 h-4 mr-2" />
+                  <span>Dealer Login</span>
+                </Link>
+              )}
               
               <button aria-label="Toggle mobile menu" className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-secondary/50 text-foreground transition-colors ml-1" onClick={() => setMobileOpen(!mobileOpen)}>
                 {mobileOpen ? <X className="w-[20px] h-[20px]" /> : <Menu className="w-[20px] h-[20px]" />}
@@ -168,6 +190,17 @@ const Navbar = () => {
                 <Link to="/about" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.about')}</Link>
                 <Link to="/contact" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.contact')}</Link>
                 
+                {user ? (
+                  <div className="flex flex-col gap-3 mt-6">
+                    <button onClick={() => { signOut(); setMobileOpen(false); }} className="hover:bg-red-100 text-red-500 font-bold tracking-wider bg-red-50 rounded-xl transition-colors py-4 px-5 flex items-center justify-center gap-3">
+                      <LogOut className="w-5 h-5" /> Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Link to="/dealer/login" onClick={() => setMobileOpen(false)} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 mt-6 font-bold uppercase tracking-wider shadow-lg">
+                    <UserIcon className="w-5 h-5" /> Dealer Login
+                  </Link>
+                )}
 
               </div>
             </motion.div>

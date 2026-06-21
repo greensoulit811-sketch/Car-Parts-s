@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Heart, Tag, Clock, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { Product } from '@/data/products';
 import { motion } from 'framer-motion';
 import DirhamIcon from '@/components/DirhamIcon';
@@ -11,10 +12,15 @@ interface OfferProductCardProps {
 
 const OfferProductCard = ({ product }: OfferProductCardProps) => {
   const { toggleWishlist, isInWishlist } = useCart();
+  const { user } = useAuth();
+  const isDealer = !!user;
   const wishlisted = isInWishlist(product.id);
 
-  const discountPercentage = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const activePrice = isDealer && product.dealerPrice != null ? product.dealerPrice : product.price;
+  const activeOriginalPrice = isDealer && product.dealerOriginalPrice != null ? product.dealerOriginalPrice : product.originalPrice;
+
+  const discountPercentage = activeOriginalPrice 
+    ? Math.round(((activeOriginalPrice - activePrice) / activeOriginalPrice) * 100)
     : 0;
 
   return (
@@ -80,12 +86,17 @@ const OfferProductCard = ({ product }: OfferProductCardProps) => {
           {/* Price */}
           <div className="flex items-end gap-2 mb-3">
             <span className="font-heading font-black text-2xl text-primary leading-none flex items-baseline gap-1">
-              <span className="text-sm font-bold"><DirhamIcon /></span> {product.price}
+              <span className="text-sm font-bold"><DirhamIcon /></span> {activePrice}
             </span>
-            {product.originalPrice && (
-              <span className="text-muted-foreground font-medium line-through text-xs flex items-baseline gap-1 pb-0.5 opacity-70">
-                <span className="text-[10px]"><DirhamIcon /></span> {product.originalPrice}
-              </span>
+            {activeOriginalPrice && (
+              <>
+                <span className="text-muted-foreground font-medium line-through text-xs flex items-baseline gap-1 pb-0.5 opacity-70">
+                  <span className="text-[10px]"><DirhamIcon /></span> {activeOriginalPrice}
+                </span>
+                <span className="text-hot text-[12px] font-bold leading-none self-end pb-1">
+                  ({discountPercentage}% OFF)
+                </span>
+              </>
             )}
           </div>
           

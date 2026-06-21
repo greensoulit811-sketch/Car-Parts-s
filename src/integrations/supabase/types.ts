@@ -351,6 +351,8 @@ export type Database = {
           category: string
           colors: string[] | null
           created_at: string
+          dealer_price: number | null
+          dealer_original_price: number | null
           description: string | null
           id: string
           image: string
@@ -374,6 +376,8 @@ export type Database = {
           category?: string
           colors?: string[] | null
           created_at?: string
+          dealer_price?: number | null
+          dealer_original_price?: number | null
           description?: string | null
           id?: string
           image?: string
@@ -397,6 +401,8 @@ export type Database = {
           category?: string
           colors?: string[] | null
           created_at?: string
+          dealer_price?: number | null
+          dealer_original_price?: number | null
           description?: string | null
           id?: string
           image?: string

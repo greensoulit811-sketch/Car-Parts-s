@@ -19,7 +19,7 @@ interface VariationRow {
 }
 
 const emptyForm = {
-  name: '', brand: '', price: 0, original_price: null as number | null, category: 'running',
+  name: '', brand: '', price: 0, original_price: null as number | null, dealer_price: null as number | null, dealer_original_price: null as number | null, category: 'running',
   image: '', images: [] as string[], sku: '',
   sizes: '', colors: '', description: '', stock: 50,
   is_active: true, is_trending: false, is_new: false, is_offer: false,
@@ -43,6 +43,7 @@ const ProductsManager = () => {
   const mainImageRef = useRef<HTMLInputElement>(null);
   const galleryRef = useRef<HTMLInputElement>(null);
   const [autoOpened, setAutoOpened] = useState(false);
+  const [dealerDiscountPct, setDealerDiscountPct] = useState<string>('');
 
   // Auto-open product from URL params
   useEffect(() => {
@@ -90,6 +91,7 @@ const ProductsManager = () => {
     setEditing(null);
     setForm({ ...emptyForm });
     setVariations([]);
+    setDealerDiscountPct('');
     setShowForm(true);
   };
 
@@ -98,12 +100,15 @@ const ProductsManager = () => {
     setForm({
       name: p.name, brand: p.brand, price: Number(p.price),
       original_price: p.original_price ? Number(p.original_price) : null,
+      dealer_price: p.dealer_price ? Number(p.dealer_price) : null,
+      dealer_original_price: p.dealer_original_price ? Number(p.dealer_original_price) : null,
       category: p.category, image: p.image, images: p.images || [],
       sku: (p as any).sku || '',
       sizes: (p.sizes || []).join(', '), colors: (p.colors || []).join(', '),
       description: p.description || '', stock: p.stock || 50,
       is_active: p.is_active ?? true, is_trending: p.is_trending ?? false, is_new: p.is_new ?? false, is_offer: (p as any).is_offer ?? false,
     });
+    setDealerDiscountPct(p.dealer_price && p.price ? String(Math.round((1 - Number(p.dealer_price) / Number(p.price)) * 100)) : '');
     setShowForm(true);
   };
 
@@ -200,7 +205,7 @@ const ProductsManager = () => {
 
     const data: any = {
       name: form.name, brand: form.brand, price: form.price,
-      original_price: form.original_price, category: form.category,
+      original_price: form.original_price, dealer_price: form.dealer_price, dealer_original_price: form.dealer_original_price, category: form.category,
       image: form.image || '/assets/shoe-runner-1.jpg',
       images: form.images.length > 0 ? form.images : [form.image || '/assets/shoe-runner-1.jpg'],
       sku: form.sku,
@@ -361,19 +366,67 @@ const ProductsManager = () => {
               {/* Pricing & Stock */}
               <div className="bg-secondary/30 border border-border rounded-lg p-5 space-y-4">
                 <h3 className="font-heading text-sm font-bold uppercase tracking-wider text-muted-foreground">Pricing & Stock</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Regular Price (<DirhamIcon className="w-3 h-3" />) *</label>
-                    <Input type="number" step="0.01" value={form.price} onChange={e => setForm({ ...form, price: +e.target.value })} required />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4 border border-border/50 bg-background/50 p-4 rounded-md">
+                    <h4 className="font-heading text-xs uppercase tracking-wider font-bold text-foreground mb-2 pb-2 border-b border-border/50">Single Customer</h4>
+                    <div>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Regular Price (<DirhamIcon className="w-3 h-3" />) *</label>
+                      <Input type="number" step="0.01" value={form.price || ''} onChange={e => {
+                        const newPrice = +e.target.value;
+                        const newForm = { ...form, price: newPrice };
+                        if (dealerDiscountPct && newPrice) {
+                          const pct = Number(dealerDiscountPct);
+                          newForm.dealer_price = Number((newPrice - (newPrice * pct / 100)).toFixed(2));
+                        }
+                        setForm(newForm);
+                      }} required />
+                    </div>
+                    <div>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Discount Price (<DirhamIcon className="w-3 h-3" />)</label>
+                      <Input type="number" step="0.01" value={form.original_price || ''} onChange={e => setForm({ ...form, original_price: e.target.value ? +e.target.value : null })} placeholder="Original before discount" />
+                      <p className="font-body text-xs text-muted-foreground mt-1">Set original price here if on sale</p>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Discount Price (<DirhamIcon className="w-3 h-3" />)</label>
-                    <Input type="number" step="0.01" value={form.original_price || ''} onChange={e => setForm({ ...form, original_price: e.target.value ? +e.target.value : null })} placeholder="Original before discount" />
-                    <p className="font-body text-xs text-muted-foreground mt-1">Set original price here if on sale</p>
+
+                  <div className="space-y-4 border border-border/50 bg-background/50 p-4 rounded-md">
+                    <h4 className="font-heading text-xs uppercase tracking-wider font-bold text-foreground mb-2 pb-2 border-b border-border/50">Dealer</h4>
+                    <div>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Dealer Price (<DirhamIcon className="w-3 h-3" />)</label>
+                      <Input type="number" step="0.01" value={form.dealer_price || ''} onChange={e => {
+                        const dp = e.target.value ? +e.target.value : null;
+                        setForm({ ...form, dealer_price: dp });
+                        if (dp && form.price) {
+                          setDealerDiscountPct(String(Math.round((1 - dp / form.price) * 100)));
+                        } else {
+                          setDealerDiscountPct('');
+                        }
+                      }} placeholder="For dealers" />
+                    </div>
+                    <div>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1">Dealer Discount (%)</label>
+                      <Input type="number" step="0.1" value={dealerDiscountPct} onChange={e => {
+                        setDealerDiscountPct(e.target.value);
+                        if (e.target.value && form.price) {
+                          const pct = Number(e.target.value);
+                          const newDealerPrice = form.price - (form.price * pct / 100);
+                          setForm({ ...form, dealer_price: Number(newDealerPrice.toFixed(2)) });
+                        } else if (!e.target.value) {
+                          setForm({ ...form, dealer_price: null });
+                        }
+                      }} placeholder="Auto-calculates Dealer Price" />
+                    </div>
+                    <div>
+                      <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-1">Dealer Discount Price (<DirhamIcon className="w-3 h-3" />)</label>
+                      <Input type="number" step="0.01" value={form.dealer_original_price || ''} onChange={e => setForm({ ...form, dealer_original_price: e.target.value ? +e.target.value : null })} placeholder="Original price for dealers" />
+                      <p className="font-body text-xs text-muted-foreground mt-1">If empty, falls back to Single Customer Discount Price</p>
+                    </div>
                   </div>
+                </div>
+
+                <div className="mt-4 border border-border/50 bg-background/50 p-4 rounded-md">
                   <div>
                     <label className="block font-body text-xs uppercase tracking-wider text-muted-foreground mb-1">Stock Quantity</label>
-                    <Input type="number" value={form.stock} onChange={e => setForm({ ...form, stock: +e.target.value })} />
+                    <Input type="number" value={form.stock} onChange={e => setForm({ ...form, stock: +e.target.value })} className="max-w-[200px]" />
                   </div>
                 </div>
               </div>

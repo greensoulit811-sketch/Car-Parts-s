@@ -6,6 +6,7 @@ import { useProductVariations } from '@/hooks/useProductVariations';
 import { useCart } from '@/context/CartContext';
 import { useFacebookTracking } from '@/hooks/useFacebookTracking';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -24,6 +25,9 @@ const ProductPage = () => {
   const { fbTrackViewContent, fbTrackAddToCart } = useFacebookTracking();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isDealer = !!user;
+
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
@@ -32,6 +36,8 @@ const ProductPage = () => {
   const allProducts = useMemo(() => dbProducts.map(p => ({
     id: p.id, name: p.name, brand: p.brand, price: Number(p.price),
     originalPrice: p.original_price ? Number(p.original_price) : undefined,
+    dealerPrice: p.dealer_price ? Number(p.dealer_price) : undefined,
+    dealerOriginalPrice: p.dealer_original_price ? Number(p.dealer_original_price) : undefined,
     category: p.category as any, image: p.image,
     images: p.images || [p.image], sizes: p.sizes || [], colors: p.colors || [],
     description: p.description || '', rating: Number(p.rating) || 4.5,
@@ -53,7 +59,8 @@ const ProductPage = () => {
     return variations.find(v => v.size === String(selectedSize) && v.color === selectedColor) || null;
   }, [selectedSize, selectedColor, variations]);
 
-  const displayPrice = selectedVariation?.price ? Number(selectedVariation.price) : product?.price || 0;
+  const basePrice = isDealer && product?.dealerPrice != null ? product.dealerPrice : product?.price;
+  const displayPrice = selectedVariation?.price ? Number(selectedVariation.price) : basePrice || 0;
   const variationStock = selectedVariation ? selectedVariation.stock : null;
 
   useEffect(() => {
@@ -164,6 +171,9 @@ const ProductPage = () => {
 
               <div className="flex flex-wrap items-center gap-3 mb-8">
                 <span className="font-heading lg:text-3xl md:text-2xl text-2xl font-bold text-blue-500"><DirhamIcon className="mr-2" />{displayPrice}</span>
+                {isDealer && product.dealerPrice != null && !selectedVariation?.price && (
+                  <span className="bg-neon/10 text-neon px-2 py-1 text-[10px] font-bold tracking-wider uppercase rounded-sm">Dealer Price</span>
+                )}
                 {product.originalPrice && (
                   <>
                     <span className="font-body text-lg text-muted-foreground line-through"><DirhamIcon className="mr-1" />{product.originalPrice}</span>

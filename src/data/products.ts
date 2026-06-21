@@ -4,6 +4,8 @@ export interface Product {
   brand: string;
   price: number;
   originalPrice?: number;
+  dealerPrice?: number;
+  dealerOriginalPrice?: number;
   category: 'running' | 'basketball' | 'football' | 'training' | 'lifestyle' | 'trail' | 'women';
   image: string;
   images: string[];

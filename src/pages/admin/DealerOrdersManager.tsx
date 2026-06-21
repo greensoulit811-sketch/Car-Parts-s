@@ -17,14 +17,14 @@ const statusColors: Record<string, string> = {
 
 const statuses = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
 
-const OrdersManager = () => {
+const DealerOrdersManager = () => {
   const { data: orders = [], isLoading } = useOrders();
   const updateStatus = useUpdateOrderStatus();
   const deleteOrder = useDeleteOrder();
   const [statusFilter, setStatusFilter] = useState('all');
 
   const filtered = useMemo(() => {
-    let result = orders.filter(o => !o.customer_email);
+    let result = orders.filter(o => o.customer_email);
     if (statusFilter !== 'all') {
       result = result.filter(o => o.status === statusFilter);
     }
@@ -32,9 +32,9 @@ const OrdersManager = () => {
   }, [orders, statusFilter]);
 
   const statusCounts = useMemo(() => {
-    const guestOrders = orders.filter(o => !o.customer_email);
-    const counts: Record<string, number> = { all: guestOrders.length };
-    statuses.forEach(s => { counts[s] = guestOrders.filter(o => o.status === s).length; });
+    const dealerOrders = orders.filter(o => o.customer_email);
+    const counts: Record<string, number> = { all: dealerOrders.length };
+    statuses.forEach(s => { counts[s] = dealerOrders.filter(o => o.status === s).length; });
     return counts;
   }, [orders]);
 
@@ -59,7 +59,7 @@ const OrdersManager = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="font-heading text-3xl font-bold uppercase tracking-wider text-foreground">Customer Orders</h1>
+          <h1 className="font-heading text-3xl font-bold uppercase tracking-wider text-foreground">Dealer Orders</h1>
           <p className="font-body text-sm text-muted-foreground mt-1">{statusCounts['all']} total orders</p>
         </div>
         <AddOrderDialog />
@@ -146,4 +146,4 @@ const OrdersManager = () => {
   );
 };
 
-export default OrdersManager;
+export default DealerOrdersManager;

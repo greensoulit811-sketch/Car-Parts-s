@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { useAddOrder } from '@/hooks/useDatabase';
 import { useCheckoutLeadAutoSave } from '@/hooks/useCheckoutLeads';
@@ -25,6 +26,8 @@ const CheckoutPage = () => {
   const { save: saveCheckoutLead, markCompleted: markLeadCompleted } = useCheckoutLeadAutoSave();
   const { data: shippingMethods = [] } = useShippingMethods(true);
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const isDealer = !!user;
 
 
   const [step, setStep] = useState(0);
@@ -40,6 +43,16 @@ const CheckoutPage = () => {
       setSelectedShippingId(shippingMethods[0].id);
     }
   }, [shippingMethods]);
+
+  useEffect(() => {
+    if (user) {
+      setForm(prev => ({
+        ...prev,
+        fullName: prev.fullName || user.user_metadata?.full_name || '',
+        phone: prev.phone || user.user_metadata?.phone || '',
+      }));
+    }
+  }, [user]);
 
   const selectedShipping = shippingMethods.find(s => s.id === selectedShippingId);
   const shippingCharge = selectedShipping ? Number(selectedShipping.charge) : 0;
@@ -105,7 +118,7 @@ const CheckoutPage = () => {
     try {
       await addOrder.mutateAsync({
         order_number: orderNumber, customer_name: form.fullName,
-        customer_email: '', customer_phone: form.phone,
+        customer_email: user?.email || '', customer_phone: form.phone,
         items: orderItems, total, status: 'pending', payment_method: 'cod',
         shipping_address: shippingAddress,
         notes: `${form.notes}${selectedShipping ? `\nShipping: ${selectedShipping.name} (${shippingCharge === 0 ? 'Free' : 'OMR ' + shippingCharge})` : ''}${appliedCoupon ? `\nCoupon Applied: ${appliedCoupon.code} (-OMR ${discountAmount.toFixed(2)})` : ''}`,
@@ -127,8 +140,12 @@ const CheckoutPage = () => {
   };
 
 
+  const cartCount = items.reduce((s, i) => s + i.quantity, 0);
 
-  if (items.length === 0 && !orderPlaced) { navigate('/cart'); return null; }
+  if (!orderPlaced && (items.length === 0 || (isDealer && cartCount < 10))) { 
+    navigate('/cart'); 
+    return null; 
+  }
 
   if (orderPlaced) {
     return (

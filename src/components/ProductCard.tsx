@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { Product } from '@/data/products';
 import { motion } from 'framer-motion';
 import DirhamIcon from '@/components/DirhamIcon';
@@ -11,11 +12,17 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { toggleWishlist, isInWishlist } = useCart();
+  const { user } = useAuth();
+  const isDealer = !!user;
+
   const wishlisted = isInWishlist(product.id);
   const hasMultipleImages = product.images && product.images.length > 1;
 
-  const discountPercentage = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const activePrice = isDealer && product.dealerPrice != null ? product.dealerPrice : product.price;
+  const activeOriginalPrice = isDealer && product.dealerOriginalPrice != null ? product.dealerOriginalPrice : product.originalPrice;
+
+  const discountPercentage = activeOriginalPrice 
+    ? Math.round(((activeOriginalPrice - activePrice) / activeOriginalPrice) * 100)
     : 0;
 
   return (
@@ -63,12 +70,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
           
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-[18px] text-blue-500 leading-none flex items-center gap-1">
-              <DirhamIcon /> <span>{product.price}</span>
+              <DirhamIcon /> <span>{activePrice}</span>
+              {isDealer && product.dealerPrice != null && (
+                <span className="text-neon text-[10px] uppercase tracking-wider bg-neon/10 px-1 py-0.5 rounded ml-1">Dealer Price</span>
+              )}
             </span>
-            {product.originalPrice && (
+            {activeOriginalPrice && (
               <>
                 <span className="text-gray-400 font-medium line-through text-[14px] leading-none flex items-center gap-1">
-                  <DirhamIcon /> <span>{product.originalPrice}</span>
+                  <DirhamIcon /> <span>{activeOriginalPrice}</span>
                 </span>
                 <span className="text-hot text-[12px] font-bold leading-none">
                   ({discountPercentage}% OFF)

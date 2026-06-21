@@ -29,6 +29,7 @@ const AdminLoginPage = lazy(() => import("./pages/admin/AdminLoginPage.tsx"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard.tsx"));
 const ProductsManager = lazy(() => import("./pages/admin/ProductsManager.tsx"));
 const OrdersManager = lazy(() => import("./pages/admin/OrdersManager.tsx"));
+const DealerOrdersManager = lazy(() => import("./pages/admin/DealerOrdersManager.tsx"));
 const OrderDetailsPage = lazy(() => import("./pages/admin/OrderDetailsPage.tsx"));
 const CouponsManager = lazy(() => import("./pages/admin/CouponsManager.tsx"));
 const CheckoutLeadsManager = lazy(() => import("./pages/admin/CheckoutLeadsManager.tsx"));
@@ -50,6 +51,8 @@ const AboutPage = lazy(() => import("./pages/AboutPage.tsx"));
 const ContactPage = lazy(() => import("./pages/ContactPage.tsx"));
 const CareersPage = lazy(() => import("./pages/CareersPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const DealerLoginPage = lazy(() => import("./pages/DealerLoginPage.tsx"));
+const DealerRegisterPage = lazy(() => import("./pages/DealerRegisterPage.tsx"));
 
 
 const queryClient = new QueryClient();
@@ -64,8 +67,8 @@ const PageLoader = () => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <CartProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <CartProvider>
           <AdminAuthProvider>
             <Toaster />
             <Sonner />
@@ -83,6 +86,8 @@ const App = () => (
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/careers" element={<CareersPage />} />
+                  <Route path="/dealer/login" element={<DealerLoginPage />} />
+                  <Route path="/dealer/register" element={<DealerRegisterPage />} />
 
                   <Route path="/admin/login" element={<AdminLoginPage />} />
                   <Route path="/admin" element={
@@ -93,6 +98,7 @@ const App = () => (
                     <Route index element={<Dashboard />} />
                     <Route path="products" element={<ProductsManager />} />
                     <Route path="orders" element={<OrdersManager />} />
+                    <Route path="dealer-orders" element={<DealerOrdersManager />} />
                     <Route path="orders/:id" element={<OrderDetailsPage />} />
                     <Route path="categories" element={<CategoriesManager />} />
                     <Route path="vehicle-data" element={<VehicleDataManager />} />
@@ -120,8 +126,8 @@ const App = () => (
               </LanguageProvider>
             </BrowserRouter>
           </AdminAuthProvider>
-        </AuthProvider>
-      </CartProvider>
+        </CartProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
