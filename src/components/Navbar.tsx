@@ -206,7 +206,7 @@ const Navbar = () => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="lg:hidden bg-background/95 backdrop-blur-2xl border-t border-border overflow-hidden absolute top-full left-0 w-full shadow-md"
             >
-              <div className="flex flex-col px-6 py-6 gap-2 font-body text-sm tracking-widest font-bold text-foreground">
+              <div className="flex flex-col px-6 py-6 gap-2 font-body text-md tracking-widest font-bold text-foreground">
                 <Link to="/" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40 flex items-center justify-between">
                   {t('nav.home')}
                 </Link>
