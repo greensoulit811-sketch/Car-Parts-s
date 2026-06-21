@@ -72,9 +72,6 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div>
-        heelo div
-      </div>
       <nav className={`bg-background/95 backdrop-blur-xl border-b border-border/40 transition-all duration-300 ${isScrolled ? 'shadow-lg py-2' : 'shadow-sm py-4'}`}>
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between">
