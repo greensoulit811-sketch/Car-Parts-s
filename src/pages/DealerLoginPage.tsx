@@ -208,7 +208,7 @@ const DealerLoginPage = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="sr-only">Sponsored Details (Optional)</label>
+                    <label className="sr-only">Dealer Address</label>
                     <div className="relative group">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                         <UserIcon className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
@@ -216,7 +216,7 @@ const DealerLoginPage = () => {
                       <input
                         type="text"
                         className="text-left appearance-none rounded-xl relative block w-full px-4 py-4 pl-12 border border-gray-200 bg-gray-50 lg:bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm transition-all shadow-sm"
-                        placeholder="Sponsored Details (Optional)"
+                        placeholder="Dealer Address"
                         value={sponsoredDetails}
                         onChange={(e) => setSponsoredDetails(e.target.value)}
                       />

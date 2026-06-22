@@ -105,7 +105,7 @@ const UsersManager = () => {
 
       <div className="relative mb-6">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <input type="text" placeholder="Search by name or email..." value={search} onChange={e => setSearch(e.target.value)}
+        <input type="text" placeholder="Search by name or address..." value={search} onChange={e => setSearch(e.target.value)}
           className="w-full pl-11 pr-4 py-3 border border-border bg-card rounded-md font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors" />
       </div>
 
@@ -131,15 +131,22 @@ const UsersManager = () => {
                     <span className="font-body text-sm font-semibold text-foreground">{user.full_name || 'No Name'}</span>
                   </div>
                 </td>
-                <td className="p-4 font-body text-sm text-muted-foreground">{user.email}</td>
+
+               <td className="p-2 font-body text-md text-muted-foreground">
+                 <div className="flex flex-col gap-0 text-[16px]">
+                  <span className="p-2 font-body text-muted-foreground">{user.email}</span>
+                  {user.phone && <span className="p-2 font-body text-muted-foreground">{user.phone}</span>}
+                </div>
+               </td>
+
                 <td className="p-4 font-body text-sm text-muted-foreground">
-                  <div className="flex flex-col gap-1 text-xs">
+                  <div className="flex flex-col gap-3 text-[16px]">
                     {user.license_number && <span><span className="font-semibold">License:</span> {user.license_number}</span>}
-                    {user.sponsored_details && <span><span className="font-semibold">Sponsored:</span> {user.sponsored_details}</span>}
+                    {user.sponsored_details && <span><span className="font-semibold">Address:</span> {user.sponsored_details}</span>}
                     {!user.license_number && !user.sponsored_details && <span className="italic opacity-50">No details provided</span>}
                   </div>
                 </td>
-                <td className="p-4 font-body text-sm text-muted-foreground">{new Date(user.created_at).toLocaleDateString()}</td>
+                <td className="p-4 font-body text-[16px] text-muted-foreground">{new Date(user.created_at).toLocaleDateString()}</td>
                 <td className="p-4 text-right">
                   <div className="flex flex-col items-end gap-3">
                     <label className="flex items-center gap-2 cursor-pointer mt-1">
