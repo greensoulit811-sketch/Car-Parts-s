@@ -153,6 +153,11 @@ const Navbar = () => {
                       </p>
                       <p className="font-body font-bold text-sm truncate">{user.user_metadata?.full_name || user.email || 'User'}</p>
                     </div>
+                    {user.user_metadata?.role === 'dealer' && (
+                      <Link to="/dealer/dashboard" className="px-5 py-2.5 hover:bg-secondary/50 transition-colors text-[13px] font-body font-medium flex items-center gap-2 text-left w-full">
+                        <ShieldCheck className="w-4 h-4" /> Dashboard
+                      </Link>
+                    )}
                     <button onClick={() => signOut()} className="px-5 py-2.5 hover:bg-red-50 text-red-500 transition-colors text-[13px] font-body font-medium flex items-center gap-2 text-left w-full">
                       <LogOut className="w-4 h-4" /> Logout
                     </button>
@@ -223,6 +228,11 @@ const Navbar = () => {
                 
                 {user ? (
                   <div className="flex flex-col gap-3 mt-6">
+                    {user.user_metadata?.role === 'dealer' && (
+                      <Link to="/dealer/dashboard" onClick={() => setMobileOpen(false)} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider">
+                        <ShieldCheck className="w-5 h-5" /> Dealer Dashboard
+                      </Link>
+                    )}
                     <button onClick={() => { signOut(); setMobileOpen(false); }} className="hover:bg-red-100 text-red-500 font-bold tracking-wider bg-red-50 rounded-xl transition-colors py-4 px-5 flex items-center justify-center gap-3">
                       <LogOut className="w-5 h-5" /> Logout
                     </button>

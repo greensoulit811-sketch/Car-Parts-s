@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useOrders, useUpdateOrderStatus } from '@/hooks/useDatabase';
 import { printInvoice, printCourierSlip } from '@/components/admin/InvoicePrint';
 import { Printer, Truck, ArrowLeft, Package, User, MapPin, CreditCard, Clock } from 'lucide-react';
@@ -20,6 +20,8 @@ const statuses = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
 
 const OrderDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const backLink = location.pathname.includes('/dealer-orders') ? '/admin/dealer-orders' : '/admin/orders';
   const { data: orders = [], isLoading } = useOrders();
   const updateStatus = useUpdateOrderStatus();
 
@@ -39,7 +41,7 @@ const OrderDetailsPage = () => {
   if (!order) return (
     <div className="text-center py-20">
       <p className="font-heading text-2xl font-bold text-foreground mb-2">Order Not Found</p>
-      <Link to="/admin/orders" className="font-body text-sm text-primary hover:underline">← Back to Orders</Link>
+      <Link to={backLink} className="font-body text-sm text-primary hover:underline">← Back to Orders</Link>
     </div>
   );
 
@@ -52,7 +54,7 @@ const OrderDetailsPage = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
-          <Link to="/admin/orders" className="p-2 hover:bg-secondary rounded-md transition-colors">
+          <Link to={backLink} className="p-2 hover:bg-secondary rounded-md transition-colors">
             <ArrowLeft className="w-5 h-5 text-muted-foreground" />
           </Link>
           <div>

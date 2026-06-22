@@ -15,6 +15,7 @@ const DealerLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [sponsoredDetails, setSponsoredDetails] = useState('');
+  const [area, setArea] = useState('');
   const [licenseNumber, setLicenseNumber] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -51,7 +52,7 @@ const DealerLoginPage = () => {
           toast.success('Dealer login successful');
         }
         
-        const from = (location.state as any)?.from || '/';
+        const from = (location.state as any)?.from || '/dealer/dashboard';
         navigate(from);
       } else {
         const { data, error } = await supabase.auth.signUp({
@@ -63,6 +64,7 @@ const DealerLoginPage = () => {
               phone: phone,
               role: 'dealer',
               sponsored_details: sponsoredDetails,
+              area: area,
               license_number: licenseNumber,
               is_approved: false
             }
@@ -72,7 +74,7 @@ const DealerLoginPage = () => {
         if (error) throw error;
 
         toast.success('Registration successful! Welcome to the dealer portal.');
-        navigate('/');
+        navigate('/dealer/dashboard');
       }
     } catch (error: any) {
       toast.error(error.message || 'Authentication failed');
@@ -219,6 +221,21 @@ const DealerLoginPage = () => {
                         placeholder="Dealer Address"
                         value={sponsoredDetails}
                         onChange={(e) => setSponsoredDetails(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="sr-only">Dealer Area</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                        <UserIcon className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                      </div>
+                      <input
+                        type="text"
+                        className="text-left appearance-none rounded-xl relative block w-full px-4 py-4 pl-12 border border-gray-200 bg-gray-50 lg:bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm transition-all shadow-sm"
+                        placeholder="Dealer Area"
+                        value={area}
+                        onChange={(e) => setArea(e.target.value)}
                       />
                     </div>
                   </div>

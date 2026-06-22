@@ -37,7 +37,7 @@ const CheckoutPage = () => {
   const [orderId, setOrderId] = useState('');
   const [selectedShippingId, setSelectedShippingId] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [form, setForm] = useState({ fullName: '', phone: '', address: '', notes: '' });
+  const [form, setForm] = useState({ fullName: '', phone: '', address: '', area: '', notes: '' });
 
   useEffect(() => {
     if (shippingMethods.length > 0 && !selectedShippingId) {
@@ -51,6 +51,7 @@ const CheckoutPage = () => {
         ...prev,
         fullName: prev.fullName || user.user_metadata?.full_name || '',
         phone: prev.phone || user.user_metadata?.phone || '',
+        area: prev.area || user.user_metadata?.area || '',
       }));
     }
   }, [user]);
@@ -75,7 +76,7 @@ const CheckoutPage = () => {
     if (items.length === 0) return;
     saveCheckoutLead({
       name: form.fullName, phone: form.phone, email: '',
-      address: form.address, area: '', notes: form.notes,
+      address: form.address, area: form.area, notes: form.notes,
       cartItems: items.map(item => ({
         productId: item.product.id, productName: item.product.name,
         size: item.size, color: item.color, quantity: item.quantity, price: item.product.price,
@@ -95,6 +96,7 @@ const CheckoutPage = () => {
     if (!form.fullName.trim()) newErrors.fullName = t('checkout.name_required');
     if (!form.phone.trim()) newErrors.phone = t('checkout.phone_required');
     else if (form.phone.replace(/\D/g, '').length < 8) newErrors.phone = t('checkout.phone_invalid');
+    if (!form.area.trim()) newErrors.area = 'Area is required';
     if (!form.address.trim()) newErrors.address = t('checkout.address_required');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -112,8 +114,9 @@ const CheckoutPage = () => {
     const orderItems = items.map(item => ({
       productId: item.product.id, productName: item.product.name,
       size: item.size, color: item.color, quantity: item.quantity, price: item.product.price,
+      image: item.product.image
     }));
-    const shippingAddress = `${form.address}, Oman`;
+    const shippingAddress = form.area ? `${form.area}, ${form.address}, Oman` : `${form.address}, Oman`;
     const orderNumber = `ORD${String(Date.now()).slice(-6)}`;
 
     try {

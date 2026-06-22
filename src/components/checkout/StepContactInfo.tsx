@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { User, Phone, MapPin, MessageSquare } from 'lucide-react';
 
 interface StepContactInfoProps {
-  form: { fullName: string; phone: string; address: string; notes: string };
+  form: { fullName: string; phone: string; address: string; area: string; notes: string };
   errors: Record<string, string>;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
@@ -40,6 +40,20 @@ const StepContactInfo = ({ form, errors, onChange }: StepContactInfoProps) => {
           className={errors.phone ? 'border-destructive focus-visible:ring-destructive' : ''}
         />
         {errors.phone && <p className="text-xs text-destructive mt-1 font-body">{errors.phone}</p>}
+      </div>
+
+      <div>
+        <label className="font-body text-xs uppercase tracking-wider text-muted-foreground mb-1.5 flex items-center gap-1.5">
+          <MapPin className="w-3.5 h-3.5" /> Area *
+        </label>
+        <Input
+          name="area"
+          value={form.area}
+          onChange={onChange}
+          placeholder="e.g. Al Khuwair, Ruwi, Seeb"
+          className={errors.area ? 'border-destructive focus-visible:ring-destructive' : ''}
+        />
+        {errors.area && <p className="text-xs text-destructive mt-1 font-body">{errors.area}</p>}
       </div>
 
       <div>

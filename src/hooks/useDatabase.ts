@@ -91,8 +91,19 @@ export const useOrders = () => useQuery({
   queryFn: async () => {
     const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return data as DbOrder[];
+    return (data as DbOrder[]).filter((o: any) => !o.is_hidden);
   },
+});
+
+export const useCustomerOrders = (email?: string) => useQuery({
+  queryKey: ['orders', email],
+  queryFn: async () => {
+    if (!email) return [];
+    const { data, error } = await supabase.from('orders').select('*').eq('customer_email', email).order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data as DbOrder[]).filter((o: any) => !o.is_hidden_by_dealer);
+  },
+  enabled: !!email,
 });
 
 export const useAddOrder = () => {
@@ -122,7 +133,18 @@ export const useDeleteOrder = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('orders').delete().eq('id', id);
+      const { error } = await supabase.from('orders').update({ is_hidden: true }).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['orders'] }),
+  });
+};
+
+export const useDealerDeleteOrder = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('orders').update({ is_hidden_by_dealer: true }).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['orders'] }),

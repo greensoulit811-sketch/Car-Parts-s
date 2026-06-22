@@ -10,6 +10,7 @@ interface DbUser {
   email: string;
   role: string;
   sponsored_details?: string;
+  area?: string;
   license_number?: string;
   is_approved?: boolean;
   created_at: string;
@@ -143,6 +144,7 @@ const UsersManager = () => {
                   <div className="flex flex-col gap-3 text-[16px]">
                     {user.license_number && <span><span className="font-semibold">License:</span> {user.license_number}</span>}
                     {user.sponsored_details && <span><span className="font-semibold">Address:</span> {user.sponsored_details}</span>}
+                    {user.area && <span><span className="font-semibold">Area:</span> {user.area}</span>}
                     {!user.license_number && !user.sponsored_details && <span className="italic opacity-50">No details provided</span>}
                   </div>
                 </td>
