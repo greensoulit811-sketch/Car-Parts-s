@@ -22,7 +22,7 @@ const navItems = [
   { path: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { path: '/admin/visitor-analytics', label: 'Visitor Tracker', icon: Activity },
   { path: '/admin/customers', label: 'Customers', icon: Users },
-  { path: '/admin/users', label: 'User Roles', icon: UserCog },
+  { path: '/admin/users', label: 'Dealers Details', icon: UserCog },
   { path: '/admin/marketing', label: 'Marketing', icon: Megaphone },
   { path: '/admin/shipping', label: 'Shipping Methods', icon: Truck },
   { path: '/admin/pages', label: 'Pages', icon: FileText },

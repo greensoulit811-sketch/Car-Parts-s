@@ -88,7 +88,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="font-heading text-3xl font-bold uppercase tracking-wider text-foreground">Dashboard</h1>
-          <p className="font-body text-sm text-muted-foreground mt-1">Welcome back to Legacy-29 admin</p>
+          <p className="font-body text-sm text-muted-foreground mt-1">Welcome back to kkkparts admin</p>
         </div>
         
         <div className="flex flex-col sm:flex-row items-center gap-3">

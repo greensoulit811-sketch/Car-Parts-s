@@ -35,7 +35,7 @@ export const printInvoice = (order: DbOrder) => {
 </head>
 <body>
   <div class="header">
-    <div class="logo"><img src="/logo.png" alt="Legacy-29" style="max-height: 40px; width: auto;" onerror="this.style.display='none'; this.nextSibling.style.display='block';" /><span style="display:none;">Legacy-29</span></div>
+    <div class="logo"><img src="/logo.png" alt="Legacy-29" style="max-height: 40px; width: auto;" onerror="this.style.display='none'; this.nextSibling.style.display='block';" /><span style="display:none;">kkkparts.com</span></div>
     <div class="invoice-title">
       <h2>Invoice</h2>
       <p>${order.order_number} · ${new Date(order.created_at).toLocaleDateString('en-GB')}</p>
@@ -79,7 +79,7 @@ export const printInvoice = (order: DbOrder) => {
     <div class="row total-row"><span>Total:</span><span>OMR ${Number(order.total).toFixed(3)}</span></div>
   </div>
   <div class="footer">
-    <p>Thank you for shopping with Legacy-29 · Dubai</p>
+    <p>Thank you for shopping with kkkparts · Oman</p>
   </div>
 </body>
 </html>`;
@@ -120,8 +120,8 @@ export const printCourierSlip = (order: DbOrder) => {
 <body>
   <div class="slip">
     <div class="slip-header">
-      <img src="/logo.png" alt="Legacy-29" style="max-height: 40px; margin-bottom: 8px;" onerror="this.style.display='none'; this.nextSibling.style.display='block';" />
-      <h1 style="display:none;">Legacy-29</h1>
+      <img src="/logo.png" alt="kkkparts.com" style="max-height: 40px; margin-bottom: 8px;" onerror="this.style.display='none'; this.nextSibling.style.display='block';" />
+      <h1 style="display:none;">kkkparts.com</h1>
       <p>Courier Delivery Slip</p>
     </div>
     <div class="order-num">${order.order_number}</div>

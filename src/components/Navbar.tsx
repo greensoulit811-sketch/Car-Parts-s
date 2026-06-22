@@ -148,8 +148,10 @@ const Navbar = () => {
                   </div>
                   <div className="absolute top-full right-0 mt-2 w-48 bg-background border border-border shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col py-2 z-50">
                     <div className="px-5 py-2 border-b border-border/40 mb-1">
-                      <p className="font-body text-xs text-muted-foreground uppercase tracking-widest">Signed in as</p>
-                      <p className="font-body font-bold text-sm truncate">{user.user_metadata?.full_name || 'Dealer'}</p>
+                      <p className="font-body text-xs text-muted-foreground uppercase tracking-widest">
+                        {user.user_metadata?.role === 'dealer' ? 'Signed in as Dealer' : 'Signed in as'}
+                      </p>
+                      <p className="font-body font-bold text-sm truncate">{user.user_metadata?.full_name || user.email || 'User'}</p>
                     </div>
                     <button onClick={() => signOut()} className="px-5 py-2.5 hover:bg-red-50 text-red-500 transition-colors text-[13px] font-body font-medium flex items-center gap-2 text-left w-full">
                       <LogOut className="w-4 h-4" /> Logout
