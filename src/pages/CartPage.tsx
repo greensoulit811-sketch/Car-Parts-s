@@ -16,8 +16,8 @@ const CartPage = () => {
   const [couponCode, setCouponCode] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const { t } = useLanguage();
-  const { user } = useAuth();
-  const isDealer = !!user;
+  const { user, profile } = useAuth();
+  const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
   const isDealerMOQMet = !isDealer || cartCount >= 10;
 

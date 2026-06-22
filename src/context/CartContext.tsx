@@ -35,8 +35,8 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
-  const isDealer = !!user;
+  const { user, profile } = useAuth();
+  const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
 
   const [items, setItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');

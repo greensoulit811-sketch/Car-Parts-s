@@ -25,8 +25,8 @@ const ProductPage = () => {
   const { fbTrackViewContent, fbTrackAddToCart } = useFacebookTracking();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const isDealer = !!user;
+  const { user, profile } = useAuth();
+  const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('');

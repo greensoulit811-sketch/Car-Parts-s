@@ -2,9 +2,17 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
+interface UserProfile {
+  id: string;
+  role: string;
+  is_approved: boolean;
+  [key: string]: any;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  profile: UserProfile | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -12,6 +20,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
+  profile: null,
   loading: true,
   signOut: async () => {},
 });
@@ -19,7 +28,21 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase.from('dealers').select('*').eq('id', userId).maybeSingle();
+      if (!error && data) {
+        setProfile({ ...data, role: 'dealer' });
+      } else {
+        setProfile(null);
+      }
+    } catch (e) {
+      console.error("Error fetching profile", e);
+    }
+  };
 
   useEffect(() => {
     try {
@@ -31,13 +54,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
+        if (session?.user) {
+          fetchProfile(session.user.id).finally(() => setLoading(false));
+        } else {
+          setProfile(null);
+          setLoading(false);
+        }
       });
   
       const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
+        if (session?.user) {
+          fetchProfile(session.user.id).finally(() => setLoading(false));
+        } else {
+          setProfile(null);
+          setLoading(false);
+        }
       });
   
       return () => subscription.unsubscribe();
@@ -52,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );

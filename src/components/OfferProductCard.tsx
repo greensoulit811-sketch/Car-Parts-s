@@ -12,8 +12,8 @@ interface OfferProductCardProps {
 
 const OfferProductCard = ({ product }: OfferProductCardProps) => {
   const { toggleWishlist, isInWishlist } = useCart();
-  const { user } = useAuth();
-  const isDealer = !!user;
+  const { user, profile } = useAuth();
+  const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
   const wishlisted = isInWishlist(product.id);
 
   const activePrice = isDealer && product.dealerPrice != null ? product.dealerPrice : product.price;

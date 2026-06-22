@@ -14,6 +14,8 @@ const DealerLoginPage = () => {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [sponsoredDetails, setSponsoredDetails] = useState('');
+  const [licenseNumber, setLicenseNumber] = useState('');
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
@@ -42,7 +44,13 @@ const DealerLoginPage = () => {
           return;
         }
 
-        toast.success('Dealer login successful');
+        const { data: profile } = await supabase.from('dealers').select('*').eq('id', data.user.id).maybeSingle();
+        if (profile && !profile.is_approved) {
+          toast.info('Your dealer account is pending approval by an admin. You will not see wholesale prices until approved.');
+        } else {
+          toast.success('Dealer login successful');
+        }
+        
         const from = (location.state as any)?.from || '/';
         navigate(from);
       } else {
@@ -53,7 +61,10 @@ const DealerLoginPage = () => {
             data: {
               full_name: name,
               phone: phone,
-              role: 'dealer'
+              role: 'dealer',
+              sponsored_details: sponsoredDetails,
+              license_number: licenseNumber,
+              is_approved: false
             }
           }
         });
@@ -81,12 +92,12 @@ const DealerLoginPage = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 z-10" />
           
           <img 
-            src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80" 
+            src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=60" 
             alt="Login Background" 
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${isLogin ? 'opacity-100' : 'opacity-0 scale-105'}`}
           />
           <img 
-            src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80" 
+            src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=60" 
             alt="Register Background" 
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${!isLogin ? 'opacity-100' : 'opacity-0 scale-105'}`}
           />
@@ -180,6 +191,37 @@ const DealerLoginPage = () => {
                       />
                     </div>
                   </div>
+                  <div>
+                    <label className="sr-only">License Number</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                        <ShieldCheck className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                      </div>
+                      <input
+                        type="text"
+                        required
+                        className="text-left appearance-none rounded-xl relative block w-full px-4 py-4 pl-12 border border-gray-200 bg-gray-50 lg:bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm transition-all shadow-sm"
+                        placeholder="License Number"
+                        value={licenseNumber}
+                        onChange={(e) => setLicenseNumber(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="sr-only">Sponsored Details (Optional)</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                        <UserIcon className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
+                      </div>
+                      <input
+                        type="text"
+                        className="text-left appearance-none rounded-xl relative block w-full px-4 py-4 pl-12 border border-gray-200 bg-gray-50 lg:bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm transition-all shadow-sm"
+                        placeholder="Sponsored Details (Optional)"
+                        value={sponsoredDetails}
+                        onChange={(e) => setSponsoredDetails(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -238,12 +280,12 @@ const DealerLoginPage = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
           
           <img 
-            src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80" 
+            src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=60" 
             alt="Login Background" 
             className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${isLogin ? 'opacity-90 scale-100' : 'opacity-0 scale-105'}`}
           />
           <img 
-            src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80" 
+            src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1200&q=60" 
             alt="Register Background" 
             className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${!isLogin ? 'opacity-90 scale-100' : 'opacity-0 scale-105'}`}
           />

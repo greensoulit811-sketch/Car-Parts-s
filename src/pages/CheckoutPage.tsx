@@ -27,8 +27,8 @@ const CheckoutPage = () => {
   const { save: saveCheckoutLead, markCompleted: markLeadCompleted } = useCheckoutLeadAutoSave();
   const { data: shippingMethods = [] } = useShippingMethods(true);
   const { t } = useLanguage();
-  const { user } = useAuth();
-  const isDealer = !!user;
+  const { user, profile } = useAuth();
+  const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
 
 
   const [step, setStep] = useState(0);

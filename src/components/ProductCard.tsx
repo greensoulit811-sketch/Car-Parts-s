@@ -12,8 +12,8 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { toggleWishlist, isInWishlist } = useCart();
-  const { user } = useAuth();
-  const isDealer = !!user;
+  const { user, profile } = useAuth();
+  const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
 
   const wishlisted = isInWishlist(product.id);
   const hasMultipleImages = product.images && product.images.length > 1;

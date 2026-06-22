@@ -9,6 +9,9 @@ interface DbUser {
   full_name: string;
   email: string;
   role: string;
+  sponsored_details?: string;
+  license_number?: string;
+  is_approved?: boolean;
   created_at: string;
 }
 
@@ -17,9 +20,9 @@ const UsersManager = () => {
   const [search, setSearch] = useState('');
 
   const { data: users = [], isLoading } = useQuery({
-    queryKey: ['users_list'],
+    queryKey: ['dealers_list'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('dealers').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       return data as DbUser[];
     }
@@ -35,12 +38,52 @@ const UsersManager = () => {
     }
   });
 
+  const updateApproval = useMutation({
+    mutationFn: async ({ id, is_approved }: { id: string; is_approved: boolean }) => {
+      const { error } = await supabase.from('dealers').update({ is_approved }).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dealers_list'] });
+    }
+  });
+
+  const deleteDealer = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('dealers').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dealers_list'] });
+    }
+  });
+
   const handleRoleChange = async (id: string, newRole: string) => {
     try {
       await updateRole.mutateAsync({ id, role: newRole });
       toast.success(`User role updated to ${newRole}`);
     } catch {
       toast.error('Failed to update user role. Are you sure you are an admin?');
+    }
+  };
+
+  const handleApprovalChange = async (id: string, is_approved: boolean) => {
+    try {
+      await updateApproval.mutateAsync({ id, is_approved });
+      toast.success(`Dealer ${is_approved ? 'approved' : 'disabled'} successfully`);
+    } catch {
+      toast.error('Failed to update dealer status');
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this dealer?')) {
+      try {
+        await deleteDealer.mutateAsync(id);
+        toast.success('Dealer deleted successfully');
+      } catch {
+        toast.error('Failed to delete dealer');
+      }
     }
   };
 
@@ -55,8 +98,8 @@ const UsersManager = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="font-heading text-3xl font-bold uppercase tracking-wider text-foreground">User Roles</h1>
-          <p className="font-body text-sm text-muted-foreground mt-1">Manage admin access and website users</p>
+          <h1 className="font-heading text-3xl font-bold uppercase tracking-wider text-foreground">Dealers</h1>
+          <p className="font-body text-sm text-muted-foreground mt-1">Manage wholesale dealer registrations and approvals</p>
         </div>
       </div>
 
@@ -70,10 +113,11 @@ const UsersManager = () => {
         <table className="w-full">
           <thead>
             <tr className="border-b border-border bg-secondary/50">
-              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">User</th>
+              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Dealer</th>
               <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Email</th>
+              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Details</th>
               <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Joined</th>
-              <th className="text-right p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Role</th>
+              <th className="text-right p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Status & Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -88,26 +132,44 @@ const UsersManager = () => {
                   </div>
                 </td>
                 <td className="p-4 font-body text-sm text-muted-foreground">{user.email}</td>
+                <td className="p-4 font-body text-sm text-muted-foreground">
+                  <div className="flex flex-col gap-1 text-xs">
+                    {user.license_number && <span><span className="font-semibold">License:</span> {user.license_number}</span>}
+                    {user.sponsored_details && <span><span className="font-semibold">Sponsored:</span> {user.sponsored_details}</span>}
+                    {!user.license_number && !user.sponsored_details && <span className="italic opacity-50">No details provided</span>}
+                  </div>
+                </td>
                 <td className="p-4 font-body text-sm text-muted-foreground">{new Date(user.created_at).toLocaleDateString()}</td>
                 <td className="p-4 text-right">
-                  <select 
-                    value={user.role} 
-                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                    disabled={updateRole.isPending}
-                    className={`px-3 py-1.5 border rounded-md font-body text-sm outline-none transition-colors ${
-                      user.role === 'admin' 
-                        ? 'bg-primary/10 border-primary/30 text-primary font-bold' 
-                        : 'bg-background border-border text-foreground hover:border-primary/50'
-                    }`}
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
+                  <div className="flex flex-col items-end gap-3">
+                    <label className="flex items-center gap-2 cursor-pointer mt-1">
+                      <span className={`text-xs font-semibold ${user.is_approved ? 'text-green-600' : 'text-red-500'}`}>
+                        {user.is_approved ? 'Approved' : 'Disabled'}
+                      </span>
+                      <div className="relative inline-flex items-center">
+                        <input 
+                          type="checkbox" 
+                          className="sr-only peer"
+                          checked={user.is_approved || false}
+                          disabled={updateApproval.isPending}
+                          onChange={(e) => handleApprovalChange(user.id, e.target.checked)}
+                        />
+                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                      </div>
+                    </label>
+                    <button 
+                      onClick={() => handleDelete(user.id)}
+                      disabled={deleteDealer.isPending}
+                      className="text-xs text-red-500 hover:text-red-700 font-semibold border border-red-200 hover:bg-red-50 px-2 py-1 rounded transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={4} className="p-8 text-center text-muted-foreground font-body text-sm">No users found</td></tr>
+              <tr><td colSpan={5} className="p-8 text-center text-muted-foreground font-body text-sm">No dealers found</td></tr>
             )}
           </tbody>
         </table>

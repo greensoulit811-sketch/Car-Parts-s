@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, Search, Menu, X, User as UserIcon, LogOut, Phone, Mail, Clock, ChevronDown, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useActiveCategories } from '@/hooks/useCategories';
@@ -23,6 +23,7 @@ const Navbar = () => {
   const [isCustomer, setIsCustomer] = useState(() => localStorage.getItem('role') === 'customer');
 
   const navigate = useNavigate();
+  const location = useLocation();
   const s = Array.isArray(settings) ? settings[0] || {} : settings || {};
 
   const topCategories = categories.filter(c => !c.parent_id && c.name.toLowerCase() !== 'parts').slice(0, 3);
@@ -90,6 +91,7 @@ const Navbar = () => {
                 {t('nav.home')}
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neon transition-all duration-300 group-hover:w-full rounded-full"></span>
               </Link>
+
               <Link to="/parts" className="relative py-2 group transition-colors duration-300 hover:text-foreground">
                 {t('nav.parts')}
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-neon transition-all duration-300 group-hover:w-full rounded-full"></span>
@@ -124,6 +126,7 @@ const Navbar = () => {
                   </div>
                 </form>
               </div>
+          
               
               <Link to="/cart" aria-label="Shopping Cart" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-secondary/50 text-foreground transition-all duration-300 hover:text-neon hover:bg-secondary">
                 <ShoppingCart className="w-[18px] h-[18px]" />
@@ -153,7 +156,7 @@ const Navbar = () => {
                     </button>
                   </div>
                 </div>
-              ) : !isCustomer && (
+              ) : (!isCustomer || location.pathname === '/') && (
                 <div className="hidden md:block relative group">
                   <button className="flex items-center justify-center px-6 py-2.5 rounded-full bg-foreground text-background group-hover:bg-neon group-hover:text-accent-foreground transition-all duration-300 shadow-sm group-hover:shadow-neon/20 font-bold text-[11px] uppercase tracking-widest">
                     <UserIcon className="w-4 h-4 mr-2" />
@@ -176,7 +179,7 @@ const Navbar = () => {
                     
                     <div className="h-px w-full bg-border/50 my-1"></div>
                     
-                    <button onClick={() => navigate('/dealer/login')} className="flex items-center gap-3 w-full text-left px-3 py-2.5 rounded-lg hover:bg-neon/10 transition-colors group/item">
+                    <button onClick={() => navigate('/dealer/register')} className="flex items-center gap-3 w-full text-left px-3 py-2.5 rounded-lg hover:bg-neon/10 transition-colors group/item">
                        <div className="w-8 h-8 rounded-full bg-neon/10 flex items-center justify-center">
                          <ShieldCheck className="w-4 h-4 text-neon" />
                        </div>
@@ -222,13 +225,13 @@ const Navbar = () => {
                       <LogOut className="w-5 h-5" /> Logout
                     </button>
                   </div>
-                ) : !isCustomer && (
+                ) : (!isCustomer || location.pathname === '/') && (
                   <div className="flex flex-col gap-3 mt-6">
                     <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider">
                       <ShoppingCart className="w-5 h-5" /> Continue as Customer
                     </button>
-                    <button onClick={() => { setMobileOpen(false); navigate('/dealer/login'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider shadow-lg">
-                      <ShieldCheck className="w-5 h-5" /> Dealer Login
+                    <button onClick={() => { setMobileOpen(false); navigate('/dealer/register'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider shadow-lg">
+                      <ShieldCheck className="w-5 h-5" /> Dealer Registration
                     </button>
                   </div>
                 )}
