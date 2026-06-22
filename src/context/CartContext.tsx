@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product } from '@/data/products';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
 
 export interface CartItem {
   product: Product;
   quantity: number;
   size: number;
   color: string;
+  stock?: number;
 }
 
 export interface AppliedCoupon {
@@ -18,9 +20,9 @@ export interface AppliedCoupon {
 interface CartContextType {
   items: CartItem[];
   wishlist: string[];
-  addToCart: (product: Product, size: number, color: string) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  addToCart: (product: Product, size: number, color: string, quantity?: number, stock?: number) => void;
+  removeFromCart: (productId: string, size?: number, color?: string) => void;
+  updateQuantity: (productId: string, quantity: number, size?: number, color?: string) => void;
   clearCart: () => void;
   toggleWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
@@ -60,23 +62,50 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     else localStorage.removeItem('appliedCoupon');
   }, [appliedCoupon]);
 
-  const addToCart = useCallback((product: Product, size: number, color: string) => {
+  const addToCart = useCallback((product: Product, size: number, color: string, quantity: number = 1, stock?: number) => {
     setItems(prev => {
       const existing = prev.find(i => i.product.id === product.id && i.size === size && i.color === color);
       if (existing) {
-        return prev.map(i => i === existing ? { ...i, quantity: i.quantity + 1 } : i);
+        const newQty = existing.quantity + quantity;
+        if (stock !== undefined && newQty > stock) {
+          toast.error(`Only ${stock} items available`);
+          return prev.map(i => i === existing ? { ...i, quantity: stock, stock } : i);
+        }
+        return prev.map(i => i === existing ? { ...i, quantity: newQty, stock: stock !== undefined ? stock : i.stock } : i);
       }
-      return [...prev, { product, quantity: 1, size, color }];
+      if (stock !== undefined && stock <= 0) {
+        toast.error('Item is out of stock');
+        return prev;
+      }
+      const initialQty = stock !== undefined && quantity > stock ? stock : quantity;
+      if (stock !== undefined && quantity > stock) {
+        toast.error(`Only ${stock} items available`);
+      }
+      return [...prev, { product, quantity: initialQty, size, color, stock }];
     });
   }, []);
 
-  const removeFromCart = useCallback((productId: string) => {
-    setItems(prev => prev.filter(i => i.product.id !== productId));
+  const removeFromCart = useCallback((productId: string, size?: number, color?: string) => {
+    setItems(prev => prev.filter(i => {
+      if (size !== undefined && color !== undefined) {
+        return !(i.product.id === productId && i.size === size && i.color === color);
+      }
+      return i.product.id !== productId;
+    }));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
-    if (quantity <= 0) { removeFromCart(productId); return; }
-    setItems(prev => prev.map(i => i.product.id === productId ? { ...i, quantity } : i));
+  const updateQuantity = useCallback((productId: string, quantity: number, size?: number, color?: string) => {
+    if (quantity <= 0) { removeFromCart(productId, size, color); return; }
+    setItems(prev => prev.map(i => {
+      if (i.product.id === productId && (size === undefined || i.size === size) && (color === undefined || i.color === color)) {
+        if (i.stock !== undefined && quantity > i.stock) {
+          toast.error(`Only ${i.stock} items available`);
+          return { ...i, quantity: i.stock };
+        }
+        return { ...i, quantity };
+      }
+      return i;
+    }));
   }, [removeFromCart]);
 
   const clearCart = useCallback(() => setItems([]), []);

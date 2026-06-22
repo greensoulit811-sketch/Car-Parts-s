@@ -112,7 +112,7 @@ const ProductPage = () => {
   const handleAddToCart = () => {
     if (!validateSelection()) return;
     const cartProduct = { ...product, price: displayPrice };
-    addToCart(cartProduct, selectedSize, selectedColor);
+    addToCart(cartProduct, selectedSize, selectedColor, quantity, currentStock !== null ? currentStock : undefined);
     fbTrackAddToCart({
       content_ids: [product.id], content_name: product.name,
       value: displayPrice * quantity, num_items: quantity,
@@ -123,7 +123,7 @@ const ProductPage = () => {
   const handleBuyNow = () => {
     if (!validateSelection()) return;
     const cartProduct = { ...product, price: displayPrice };
-    addToCart(cartProduct, selectedSize, selectedColor);
+    addToCart(cartProduct, selectedSize, selectedColor, quantity, currentStock !== null ? currentStock : undefined);
     navigate('/checkout');
   };
 

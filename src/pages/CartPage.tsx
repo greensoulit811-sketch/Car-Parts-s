@@ -109,13 +109,13 @@ const CartPage = () => {
                           </p>
                         )}
                       </div>
-                      <button onClick={() => removeFromCart(item.product.id)} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
+                      <button onClick={() => removeFromCart(item.product.id, item.size, item.color)} className="text-muted-foreground hover:text-foreground transition-colors"><X className="w-4 h-4" /></button>
                     </div>
                     <div className="flex flex-wrap items-center justify-between mt-4 gap-2">
                       <div className="flex items-center border border-border rounded-sm shrink-0">
-                        <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center hover:bg-card transition-colors"><Minus className="w-3 h-3" /></button>
+                        <button onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.size, item.color)} className="w-8 h-8 flex items-center justify-center hover:bg-card transition-colors"><Minus className="w-3 h-3" /></button>
                         <span className="w-8 h-8 flex items-center justify-center font-body text-xs font-bold">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-card transition-colors"><Plus className="w-3 h-3" /></button>
+                        <button onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.size, item.color)} className="w-8 h-8 flex items-center justify-center hover:bg-card transition-colors"><Plus className="w-3 h-3" /></button>
                       </div>
                       <span className="font-heading font-bold text-blue-500"><DirhamIcon className="w-[1.2em] mr-1" />{(item.product.price * item.quantity).toFixed(2)}</span>
                     </div>
