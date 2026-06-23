@@ -251,8 +251,7 @@ const Index = () => {
         <div className="container mx-auto max-w-6xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-lg border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
             <div 
-              className="flex-shrink-0 flex items-center justify-between w-full lg:w-auto mb-2 lg:mb-0 cursor-pointer lg:cursor-default"
-             // onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+              className="flex-shrink-0 flex items-center justify-between w-full lg:w-auto mb-2 lg:mb-0"
             >
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center">
@@ -260,13 +259,12 @@ const Index = () => {
                 </div>
                 <div>
                   <h3 className="font-heading font-bold text-lg text-foreground uppercase tracking-wide">Find Your Parts</h3>
-                  <p className="font-body text-xs text-muted-foreground">Select vehicle for exact fitment</p>
+                  <p className="font-body text-xs text-muted-foreground">Search for exact fitment</p>
                 </div>
               </div>
-              <ChevronDown className={`w-5 h-5 text-neon lg:hidden transition-transform duration-300 ${isSearchExpanded ? 'rotate-180' : ''}`} />
             </div>
             
-            <div className={`w-full lg:w-auto flex-1 grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out ${isSearchExpanded ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0 lg:grid-rows-[1fr] lg:opacity-100 lg:mt-0'}`}>
+            <div className="w-full lg:w-auto flex-1 mt-4 lg:mt-0">
               <div className="overflow-hidden">
                 <form onSubmit={(e) => { 
                     e.preventDefault(); 
