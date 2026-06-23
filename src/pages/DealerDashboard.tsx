@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useCustomerOrders, useProducts, useDealerDeleteOrder } from '@/hooks/useDatabase';
-import { Package, Phone, Mail, ShieldCheck, Clock, CheckCircle2, XCircle, MapPin, Trash2 } from 'lucide-react';
+import { Package, Phone, Mail, ShieldCheck, Clock, CheckCircle2, XCircle, MapPin, Trash2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import DirhamIcon from '@/components/DirhamIcon';
 
@@ -69,7 +69,7 @@ const DealerDashboard = () => {
       <Navbar />
       
       <div className="flex-grow container mx-auto px-4 py-6 md:py-8 mt-28 md:mt-36">
-        <div className="max-w-6xl mx-auto space-y-6">
+        <div className="container mx-auto lg:px-4 px-1 space-y-6">
           {!profile?.is_approved && (
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md shadow-sm mb-6">
               <div className="flex">
@@ -124,6 +124,15 @@ const DealerDashboard = () => {
                     <p className="text-sm text-gray-900">{user?.email}</p>
                   </div>
                 </div>
+                {profile?.plain_password && (
+                  <div className="flex items-start gap-3">
+                    <Lock className="w-5 h-5 text-gray-400 mt-0.5" />
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Password</p>
+                      <p className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-0.5 rounded border border-gray-100 inline-block">{profile.plain_password}</p>
+                    </div>
+                  </div>
+                )}
                 {profile?.phone && (
                   <div className="flex items-start gap-3">
                     <Phone className="w-5 h-5 text-gray-400 mt-0.5" />
@@ -160,6 +169,7 @@ const DealerDashboard = () => {
                     </div>
                   </div>
                 )}
+                
               </div>
 
               <div className="mt-8 pt-6 border-t border-gray-100">
