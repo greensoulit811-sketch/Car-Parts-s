@@ -102,8 +102,7 @@ const UsersManager = () => {
       u.sponsored_details
     ].filter(Boolean).join(' ').toLowerCase();
 
-    // Check if EVERY search term is present somewhere in the user's data
-    // This allows typing "suhan habiganj" to find Suhan in Habiganj
+ 
     return searchTerms.every(term => searchableText.includes(term));
   });
 
@@ -111,6 +110,11 @@ const UsersManager = () => {
 
   return (
     <div>
+      <div>
+        <h1>
+          <button>hello button</button>
+        </h1>
+      </div>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-heading text-3xl font-bold uppercase tracking-wider text-foreground">Dealers</h1>
@@ -214,9 +218,9 @@ const UsersManager = () => {
               <button 
                 onClick={() => handleDelete(user.id)}
                 disabled={deleteDealer.isPending}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all duration-300 font-bold border border-red-100 group-hover:opacity-100 lg:opacity-70 disabled:opacity-50"
+                className="flex items-center gap-2 px-3 py-3 text-sm text-red-600 bg-red-50 hover:bg-red-400 hover:text-white rounded-xl transition-all duration-300 font-bold border border-red-100 group-hover:opacity-100 lg:opacity-70 disabled:opacity-50"
               >
-                <Trash2 className="w-4 h-4" /> Delete
+                <Trash2 className="w-4 h-4" />
               </button>
             </div>
 
