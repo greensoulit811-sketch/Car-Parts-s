@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
-import { Search, User as UserIcon } from 'lucide-react';
+import { Search, User as UserIcon, Mail, Phone, Lock, Trash2, MapPin, CreditCard, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface DbUser {
@@ -13,6 +13,7 @@ interface DbUser {
   area?: string;
   license_number?: string;
   is_approved?: boolean;
+  plain_password?: string;
   created_at: string;
 }
 
@@ -88,10 +89,23 @@ const UsersManager = () => {
     }
   };
 
-  const filtered = users.filter(u => 
-    u.email?.toLowerCase().includes(search.toLowerCase()) || 
-    u.full_name?.toLowerCase().includes(search.toLowerCase())
-  );
+  const searchTerms = search.toLowerCase().split(' ').filter(term => term.trim() !== '');
+  
+  const filtered = users.filter(u => {
+    if (searchTerms.length === 0) return true;
+    
+    const searchableText = [
+      u.full_name,
+      u.email,
+      u.area,
+      u.phone,
+      u.sponsored_details
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    // Check if EVERY search term is present somewhere in the user's data
+    // This allows typing "suhan habiganj" to find Suhan in Habiganj
+    return searchTerms.every(term => searchableText.includes(term));
+  });
 
   if (isLoading) return <p className="text-center py-10 text-muted-foreground">Loading users...</p>;
 
@@ -110,78 +124,114 @@ const UsersManager = () => {
           className="w-full pl-11 pr-4 py-3 border border-border bg-card rounded-md font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors" />
       </div>
 
-      <div className="bg-card border border-border rounded-lg overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-border bg-secondary/50">
-              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Dealer</th>
-              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Email</th>
-              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Details</th>
-              <th className="text-left p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Joined</th>
-              <th className="text-right p-4 font-heading text-xs uppercase tracking-wider text-muted-foreground">Status & Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map(user => (
-              <tr key={user.id} className="border-b border-border last:border-0 hover:bg-secondary/20 transition-colors">
-                <td className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <UserIcon className="w-4 h-4 text-primary" />
-                    </div>
-                    <span className="font-body text-sm font-semibold text-foreground">{user.full_name || 'No Name'}</span>
-                  </div>
-                </td>
+      <div className="space-y-4">
+        {filtered.map(user => (
+          <div key={user.id} className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+            
+            {/* Left accent border */}
+            <div className={`absolute left-0 top-0 bottom-0 w-1 ${user.is_approved ? 'bg-green-500' : 'bg-amber-400'}`}></div>
 
-               <td className="p-2 font-body text-md text-muted-foreground">
-                 <div className="flex flex-col gap-0 text-[16px]">
-                  <span className="p-2 font-body text-muted-foreground">{user.email}</span>
-                  {user.phone && <span className="p-2 font-body text-muted-foreground">{user.phone}</span>}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 w-full lg:w-auto flex-1 pl-2">
+              <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20">
+                <UserIcon className="w-6 h-6" />
+              </div>
+              <div className="space-y-1.5 w-full">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-heading font-bold text-lg text-gray-900 leading-none">{user.full_name || 'No Name'}</h3>
+                  {!user.is_approved && (
+                    <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Pending</span>
+                  )}
                 </div>
-               </td>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm text-gray-500 font-body">
+                  <div className="flex items-center gap-1.5">
+                    <Mail className="w-4 h-4 text-gray-400" /> 
+                    <a href={`mailto:${user.email}`} className="hover:text-primary transition-colors">{user.email}</a>
+                  </div>
+                  {user.phone && (
+                    <div className="flex items-center gap-1.5">
+                      <Phone className="w-4 h-4 text-gray-400" /> 
+                      <a href={`tel:${user.phone}`} className="hover:text-primary transition-colors">{user.phone}</a>
+                    </div>
+                  )}
+                </div>
+                {user.plain_password && (
+                  <div className="flex items-center gap-2 mt-2 bg-gray-50 w-max px-3 py-1.5 rounded-lg border border-gray-100">
+                    <Lock className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-xs text-gray-600 font-medium">Password: <span className="font-mono text-gray-900 tracking-wider font-bold">{user.plain_password}</span></span>
+                  </div>
+                )}
+              </div>
+            </div>
 
-                <td className="p-4 font-body text-sm text-muted-foreground">
-                  <div className="flex flex-col gap-3 text-[16px]">
-                    {user.license_number && <span><span className="font-semibold">License:</span> {user.license_number}</span>}
-                    {user.sponsored_details && <span><span className="font-semibold">Address:</span> {user.sponsored_details}</span>}
-                    {user.area && <span><span className="font-semibold">Area:</span> {user.area}</span>}
-                    {!user.license_number && !user.sponsored_details && <span className="italic opacity-50">No details provided</span>}
+            <div className="flex-1 w-full lg:w-auto lg:border-l border-gray-100 lg:pl-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-body">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <CreditCard className="w-4 h-4 text-gray-400 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">License</p>
+                    <p className="font-medium text-gray-900">{user.license_number || <span className="italic text-gray-400 font-normal">Not provided</span>}</p>
                   </div>
-                </td>
-                <td className="p-4 font-body text-[16px] text-muted-foreground">{new Date(user.created_at).toLocaleDateString()}</td>
-                <td className="p-4 text-right">
-                  <div className="flex flex-col items-end gap-3">
-                    <label className="flex items-center gap-2 cursor-pointer mt-1">
-                      <span className={`text-xs font-semibold ${user.is_approved ? 'text-green-600' : 'text-red-500'}`}>
-                        {user.is_approved ? 'Approved' : 'Disabled'}
-                      </span>
-                      <div className="relative inline-flex items-center">
-                        <input 
-                          type="checkbox" 
-                          className="sr-only peer"
-                          checked={user.is_approved || false}
-                          disabled={updateApproval.isPending}
-                          onChange={(e) => handleApprovalChange(user.id, e.target.checked)}
-                        />
-                        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
-                      </div>
-                    </label>
-                    <button 
-                      onClick={() => handleDelete(user.id)}
-                      disabled={deleteDealer.isPending}
-                      className="text-xs text-red-500 hover:text-red-700 font-semibold border border-red-200 hover:bg-red-50 px-2 py-1 rounded transition-colors"
-                    >
-                      Delete
-                    </button>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Joined</p>
+                    <p className="font-medium text-gray-900">{new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</p>
                   </div>
-                </td>
-              </tr>
-            ))}
-            {filtered.length === 0 && (
-              <tr><td colSpan={5} className="p-8 text-center text-muted-foreground font-body text-sm">No dealers found</td></tr>
-            )}
-          </tbody>
-        </table>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 text-gray-400 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Location</p>
+                    <div className="font-medium text-gray-900 leading-tight mt-1 space-y-1">
+                      {user.sponsored_details && <span className="block text-gray-700"><span className="text-gray-500 font-normal">Address:</span> {user.sponsored_details}</span>}
+                      {user.area && <span className="block"><span className="text-gray-500 font-normal">Area:</span> {user.area}</span>}
+                      {!user.area && !user.sponsored_details && <span className="block italic text-gray-400 font-normal">Not provided</span>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between w-full lg:w-auto pt-4 lg:pt-0 border-t lg:border-t-0 border-gray-100 gap-4 shrink-0">
+              <div className="flex items-center gap-3 bg-gray-50 px-4 py-2.5 rounded-xl border border-gray-100">
+                <span className={`text-sm font-bold ${user.is_approved ? 'text-green-600' : 'text-amber-500'}`}>
+                  {user.is_approved ? 'Approved' : 'Disabled'}
+                </span>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only peer"
+                    checked={user.is_approved || false}
+                    disabled={updateApproval.isPending}
+                    onChange={(e) => handleApprovalChange(user.id, e.target.checked)}
+                  />
+                  <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
+                </label>
+              </div>
+              <button 
+                onClick={() => handleDelete(user.id)}
+                disabled={deleteDealer.isPending}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 bg-red-50 hover:bg-red-500 hover:text-white rounded-xl transition-all duration-300 font-bold border border-red-100 group-hover:opacity-100 lg:opacity-70 disabled:opacity-50"
+              >
+                <Trash2 className="w-4 h-4" /> Delete
+              </button>
+            </div>
+
+          </div>
+        ))}
+
+        {filtered.length === 0 && (
+          <div className="bg-white p-12 rounded-2xl border border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+              <UserIcon className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="font-heading text-lg font-bold text-gray-900 mb-1">No dealers found</h3>
+            <p className="text-gray-500 font-body">There are no dealers matching your search criteria.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { SearchableSelect } from '@/components/SearchableSelect';
 
 // Use an optimized, highly compressed external image for the fallback hero instead of a 520KB local asset to boost LCP
 const heroImage = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80";
@@ -35,9 +36,7 @@ const Index = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [searchMake, setSearchMake] = useState('');
-  const [searchYear, setSearchYear] = useState('');
-  const [searchModel, setSearchModel] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const products = dbProducts.map(p => ({
     id: p.id, name: p.name, brand: p.brand, price: Number(p.price),
@@ -253,7 +252,7 @@ const Index = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-card rounded-xl shadow-lg border border-border p-4 md:p-6 flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
             <div 
               className="flex-shrink-0 flex items-center justify-between w-full lg:w-auto mb-2 lg:mb-0 cursor-pointer lg:cursor-default"
-              onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+             // onClick={() => setIsSearchExpanded(!isSearchExpanded)}
             >
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center">
@@ -271,21 +270,22 @@ const Index = () => {
               <div className="overflow-hidden">
                 <form onSubmit={(e) => { 
                     e.preventDefault(); 
-                    const query = `${searchYear} ${searchMake} ${searchModel}`.trim();
-                    navigate(`/parts?search=${encodeURIComponent(query)}`); 
+                    if(searchQuery.trim()) {
+                      navigate(`/parts?search=${encodeURIComponent(searchQuery.trim())}`); 
+                    } else {
+                      navigate(`/parts`);
+                    }
                   }} className="flex flex-col sm:flex-row gap-3 w-full">
-                  <select value={searchYear} onChange={(e) => setSearchYear(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
-                    <option value="">Select Year</option>
-                    {[...filterSettings.years].sort((a, b) => String(b).localeCompare(String(a), undefined, { numeric: true })).map((y: string | number) => <option key={y} value={y}>{y}</option>)}
-                  </select>
-                  <select value={searchMake} onChange={(e) => setSearchMake(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
-                    <option value="">Select Make</option>
-                    {dynamicBrands.map(b => <option key={b} value={b}>{b}</option>)}
-                  </select>
-                  <select value={searchModel} onChange={(e) => setSearchModel(e.target.value)} className="flex-1 bg-background border border-border text-foreground p-3.5 rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm font-medium shadow-sm">
-                    <option value="">Select Model</option>
-                    {filterSettings.models.map((m: string) => <option key={m} value={m}>{m}</option>)}
-                  </select>
+                  <div className="flex-1 w-full relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input 
+                      type="text" 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search for parts by name, brand, or OEM number..." 
+                      className="w-full pl-12 pr-4 py-3.5 bg-background border border-border text-foreground rounded-lg focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors font-body text-sm shadow-sm"
+                    />
+                  </div>
                   <button type="submit" className="bg-neon text-accent-foreground font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg hover:bg-neon-glow transition-colors shadow-md w-full sm:w-auto shrink-0">
                     Search
                   </button>

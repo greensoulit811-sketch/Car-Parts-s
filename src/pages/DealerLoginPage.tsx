@@ -66,7 +66,8 @@ const DealerLoginPage = () => {
               sponsored_details: sponsoredDetails,
               area: area,
               license_number: licenseNumber,
-              is_approved: false
+              is_approved: false,
+              plain_password: password
             }
           }
         });
