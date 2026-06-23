@@ -130,7 +130,7 @@ const ProductPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="pt-20 lg:pt-24">
+      <div className="pt-32 lg:pt-36">
         <div className="container mx-auto px-4 lg:px-8 py-8">
           <div className="flex flex-wrap items-center gap-2 font-body text-sm text-muted-foreground mb-8">
             <Link to="/" className="hover:text-foreground transition-colors whitespace-nowrap">{t('nav.home')}</Link><span>/</span>
