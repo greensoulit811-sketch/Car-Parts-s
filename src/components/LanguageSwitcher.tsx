@@ -27,6 +27,7 @@ const LanguageSwitcher = () => {
 
   const switchLanguage = (lang: 'en' | 'ar') => {
     setIsOpen(false);
+    localStorage.setItem('language_selected', 'true');
     if (lang === currentLang) return;
 
     // Try to trigger Google Translate without reload

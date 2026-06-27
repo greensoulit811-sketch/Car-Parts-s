@@ -13,6 +13,7 @@ import FacebookPixelProvider from "@/components/FacebookPixelProvider";
 import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import VisitorTracker from "@/components/VisitorTracker";
 import ScrollToTop from "@/components/ScrollToTop";
+import LanguagePopup from "@/components/LanguagePopup";
 import { Loader2 } from "lucide-react";
 
 // Eager load homepage for better LCP performance
@@ -75,6 +76,7 @@ const App = () => (
             <BrowserRouter>
               <LanguageProvider>
               <ScrollToTop />
+              <LanguagePopup />
               <Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<Index />} />

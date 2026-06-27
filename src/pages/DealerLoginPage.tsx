@@ -30,9 +30,15 @@ const DealerLoginPage = () => {
     setLoading(true);
 
     try {
+      let authEmail = email.trim();
+
       if (isLogin) {
+        if (authEmail && !authEmail.includes('@')) {
+          authEmail = `${authEmail}@dealer.local`;
+        }
+
         const { data, error } = await supabase.auth.signInWithPassword({
-          email,
+          email: authEmail,
           password,
         });
 
@@ -55,8 +61,18 @@ const DealerLoginPage = () => {
         const from = (location.state as any)?.from || '/dealer/dashboard';
         navigate(from);
       } else {
+        if (!phone.trim()) {
+          toast.error('Phone number is required for registration');
+          setLoading(false);
+          return;
+        }
+
+        if (!authEmail) {
+          authEmail = `${phone.trim()}@dealer.local`;
+        }
+
         const { data, error } = await supabase.auth.signUp({
-          email,
+          email: authEmail,
           password,
           options: {
             data: {
@@ -244,16 +260,16 @@ const DealerLoginPage = () => {
               )}
 
               <div>
-                <label className="sr-only">Email address</label>
+                <label className="sr-only">{isLogin ? "Email or Phone Number" : "Email address (Optional)"}</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                     <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-primary transition-colors" />
                   </div>
                   <input
-                    type="email"
-                    required
+                    type="text"
+                    required={isLogin}
                     className="text-left appearance-none rounded-xl relative block w-full px-4 py-4 pl-12 border border-gray-200 bg-gray-50 lg:bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm transition-all shadow-sm"
-                    placeholder="Email address"
+                    placeholder={isLogin ? "Email or Phone Number" : "Email address (Optional)"}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
