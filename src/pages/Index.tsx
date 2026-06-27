@@ -36,6 +36,7 @@ const Index = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [currentBanner, setCurrentBanner] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const products = dbProducts.map(p => ({
@@ -120,12 +121,24 @@ const Index = () => {
   const categoryRow2 = dbCategories.slice(midCategory);
 
   const nextBanner = useCallback(() => {
-    if (heroBanners.length > 1) setCurrentBanner(prev => (prev + 1) % heroBanners.length);
+    if (heroBanners.length > 1) {
+      setDirection(1);
+      setCurrentBanner(prev => (prev + 1) % heroBanners.length);
+    }
   }, [heroBanners.length]);
 
   const prevBanner = useCallback(() => {
-    if (heroBanners.length > 1) setCurrentBanner(prev => (prev - 1 + heroBanners.length) % heroBanners.length);
+    if (heroBanners.length > 1) {
+      setDirection(-1);
+      setCurrentBanner(prev => (prev - 1 + heroBanners.length) % heroBanners.length);
+    }
   }, [heroBanners.length]);
+
+  const slideVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.8 } },
+    exit: { opacity: 0, transition: { duration: 0.8 } }
+  };
 
   useEffect(() => {
     if (heroBanners.length <= 1) return;
@@ -160,8 +173,15 @@ const Index = () => {
 
               {heroBanners.length > 0 ? (
                 <>
-                  <AnimatePresence mode="wait">
-                    <motion.div key={currentBanner} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} className="absolute inset-0">
+                  <AnimatePresence>
+                    <motion.div 
+                      key={currentBanner} 
+                      variants={slideVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      className="absolute inset-0"
+                    >
                       <img src={heroBanners[currentBanner].image_url} alt={heroBanners[currentBanner].title} fetchPriority="low" decoding="async" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
                     </motion.div>
@@ -198,7 +218,10 @@ const Index = () => {
                       </button>
                       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
                         {heroBanners.map((_, i) => (
-                          <button key={i} onClick={() => setCurrentBanner(i)} aria-label={`Go to banner ${i + 1}`}
+                          <button key={i} onClick={() => {
+                              setDirection(i > currentBanner ? 1 : -1);
+                              setCurrentBanner(i);
+                            }} aria-label={`Go to banner ${i + 1}`}
                             className={`h-2 rounded-full transition-all duration-300 ${i === currentBanner ? 'w-10 bg-neon' : 'w-2 bg-white/50 hover:bg-white/80'}`}
                           />
                         ))}
