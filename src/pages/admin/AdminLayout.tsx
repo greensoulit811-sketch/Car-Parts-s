@@ -116,7 +116,7 @@ const AdminLayout = () => {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-secondary/30">
+      <div className="min-h-screen bg-secondary/30 notranslate">
         {/* Mobile top bar */}
         <div className="sticky top-0 z-30 bg-sidebar border-b border-sidebar-border h-14 flex items-center justify-between px-4">
           <button onClick={() => setMobileOpen(true)} className="text-sidebar-foreground/60 hover:text-sidebar-foreground">
@@ -151,7 +151,7 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-secondary/30 flex">
+    <div className="min-h-screen bg-secondary/30 flex notranslate">
       <aside className={`${collapsed ? 'w-16' : 'w-64'} bg-sidebar border-r border-sidebar-border flex flex-col shrink-0 transition-all duration-300 fixed h-full z-40`}>
         <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
           {!collapsed && (

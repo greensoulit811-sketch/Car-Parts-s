@@ -54,7 +54,7 @@ const DealerDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen bg-gray-50 flex flex-col notranslate">
         <Navbar />
         <div className="flex-grow flex items-center justify-center mt-[74px]">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -65,7 +65,7 @@ const DealerDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col notranslate">
       <Navbar />
       
       <div className="flex-grow container mx-auto px-4 py-6 md:py-8 mt-28 md:mt-36">
