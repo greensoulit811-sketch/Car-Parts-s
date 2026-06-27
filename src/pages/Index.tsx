@@ -166,10 +166,10 @@ const Index = () => {
             {/* Main Slider (Left) */}
             <div className={`relative w-full h-[400px] lg:h-full overflow-hidden  ${promoBanners.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
               {/* Unconditionally render the preloaded fallback image to ensure instant LCP */}
-              <div className="absolute inset-0">
+              {/* <div className="absolute inset-0">
                 <img src={heroImage} alt="Premium Auto Parts" fetchPriority="high" decoding="sync" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40 md:to-transparent" />
-              </div>
+              </div> */}
 
               {heroBanners.length > 0 ? (
                 <>
