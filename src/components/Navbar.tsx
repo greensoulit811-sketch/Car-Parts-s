@@ -231,43 +231,42 @@ const Navbar = () => {
               >
                 {/* Header in Drawer */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-border/40 shrink-0">
-                  <span className="font-heading font-bold uppercase tracking-widest text-lg text-foreground">Menu</span>
+                  <span className="font-heading font-bold  tracking-widest text-lg text-foreground">Menu</span>
                   <button onClick={() => setMobileOpen(false)} className="w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center hover:bg-secondary transition-colors shrink-0">
                     <X className="w-5 h-5 text-foreground" />
                   </button>
                 </div>
                 
                 {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col">
-                  <div className="flex flex-col gap-2 font-body text-md tracking-widest font-bold text-foreground">
-                    <Link to="/" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40 flex items-center justify-between">
+                <div className="flex-1 overflow-y-auto px-6 py-2 flex flex-col">
+                  <div className="flex flex-col font-body text-[15px] tracking-widest font-bold text-foreground">
+                    <Link to="/" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-2.5 border-b border-border/40 flex items-center justify-between">
                       {t('nav.home')}
                     </Link>
-                    <Link to="/parts" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40 flex items-center justify-between">
+                    <Link to="/parts" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-2.5 border-b border-border/40 flex items-center justify-between">
                       {t('nav.parts')}
                     </Link>
-                    <Link to="/about" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.about')}</Link>
-                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-3 border-b border-border/40">{t('footer.contact')}</Link>
+                    <Link to="/about" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-2.5 border-b border-border/40">{t('footer.about')}</Link>
+                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-2.5 border-b border-border/40">{t('footer.contact')}</Link>
                     
                     {user ? (
-                      <div className="flex flex-col gap-3 mt-6">
+                      <div className="flex flex-col gap-2 mt-5">
                         {user.user_metadata?.role === 'dealer' && (
-                          <Link to="/dealer/dashboard" onClick={() => setMobileOpen(false)} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider">
-                            <ShieldCheck className="w-5 h-5" /> Dealer Dashboard
+                          <Link to="/dealer/dashboard" onClick={() => setMobileOpen(false)} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-bold uppercase tracking-wider text-sm">
+                            <ShieldCheck className="w-4 h-4" /> Dealer Dashboard
                           </Link>
                         )}
-                        <button onClick={() => { signOut(); setMobileOpen(false); }} className="hover:bg-red-100 text-red-500 font-bold tracking-wider bg-red-50 rounded-xl transition-colors py-4 px-5 flex items-center justify-center gap-3">
-                          <LogOut className="w-5 h-5" /> Logout
+                        <button onClick={() => { signOut(); setMobileOpen(false); }} className="hover:bg-red-100 text-red-500 font-bold tracking-wider bg-red-50 rounded-xl transition-colors py-3 px-5 flex items-center justify-center gap-2 text-sm">
+                          <LogOut className="w-4 h-4" /> Logout
                         </button>
                       </div>
                     ) : (!isCustomer || location.pathname === '/') && (
-                      <div className="flex flex-col gap-3 mt-6">
-                        <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold 
-                         tracking-wider">
-                          <ShoppingCart className="w-5 h-5" /> Continue as Customer
+                      <div className="flex flex-col gap-2.5 mt-5">
+                        <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 font-bold tracking-wider text-sm">
+                          <ShoppingCart className="w-4 h-4" /> Continue as Customer
                         </button>
-                        <button onClick={() => { setMobileOpen(false); navigate('/dealer/register'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-4 rounded-xl transition-all flex items-center justify-center gap-2 font-bold tracking-wider shadow-lg">
-                          <ShieldCheck className="w-5 h-5" /> Dealer Registration
+                        <button onClick={() => { setMobileOpen(false); navigate('/dealer/register'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 font-bold tracking-wider shadow-lg text-sm">
+                          <ShieldCheck className="w-4 h-4" /> Dealer Registration
                         </button>
                       </div>
                     )}
