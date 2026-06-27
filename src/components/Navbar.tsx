@@ -164,8 +164,8 @@ const Navbar = () => {
                 </div>
               ) : (!isCustomer || location.pathname === '/') && (
                 <div className="hidden md:block relative group">
-                  <button className="flex items-center justify-center px-6 py-2.5 rounded-full bg-foreground text-background hover:bg-foreground/90 hover:shadow-lg transition-all duration-300 font-body font-medium text-[13px] tracking-wide group/btn border border-transparent">
-                    <UserIcon className="w-[16px] h-[16px] mr-2" />
+                  <button className="flex items-center justify-center px-5 py-2.5 rounded-full bg-foreground text-background hover:bg-foreground/90 hover:shadow-lg transition-all duration-300 font-body font-medium text-[13px] tracking-wide group/btn border border-transparent">
+                    <UserIcon className="w-[14px] h-[14px] mr-2" />
                     <span>Sign In</span>
                     <ChevronDown className="w-3.5 h-3.5 ml-2 opacity-50 group-hover/btn:opacity-100 transition-opacity" />
                   </button>
@@ -178,20 +178,20 @@ const Navbar = () => {
                     <div className="px-2">
                       <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); navigate('/parts'); }} className="flex items-center gap-4 w-full text-left px-4 py-3.5 rounded-xl hover:bg-muted/50 transition-all duration-300 group/item">
                          <div className="w-10 h-10 rounded-full border border-border/50 flex items-center justify-center bg-background group-hover/item:border-primary/30 group-hover/item:shadow-sm transition-all duration-300">
-                           <ShoppingCart className="w-[18px] h-[18px] text-muted-foreground group-hover/item:text-primary transition-colors" />
+                           <ShoppingCart className="w-[18px] h-[18px] text-muted-foreground group-hover/item:text-blue-600 transition-colors" />
                          </div>
                          <div className="flex-1">
-                           <p className="text-[14px] font-medium text-foreground group-hover/item:text-primary transition-colors">Retail Customer</p>
+                           <p className="text-[14px] font-medium text-foreground group-hover/item:text-blue-600 transition-colors">Retail Customer</p>
                            <p className="text-[11px] text-muted-foreground mt-0.5">Shop at standard rates</p>
                          </div>
                       </button>
                       
                       <button onClick={() => navigate('/dealer/register')} className="flex items-center gap-4 w-full text-left px-4 py-3.5 rounded-xl hover:bg-muted/50 transition-all duration-300 group/item mt-1">
-                         <div className="w-10 h-10 rounded-full border border-border/50 flex items-center justify-center bg-background group-hover/item:border-primary/30 group-hover/item:shadow-sm transition-all duration-300">
-                           <ShieldCheck className="w-[18px] h-[18px] text-muted-foreground group-hover/item:text-primary transition-colors" />
+                         <div className="w-10 h-10 rounded-full border border-border/50 flex items-center justify-center bg-background group-hover/item:border-primary/30 group-hover/item:blue-600 transition-all duration-300">
+                           <ShieldCheck className="w-[18px] h-[18px] text-muted-foreground group-hover/item:text-blue-600 transition-colors" />
                          </div>
                          <div className="flex-1">
-                           <p className="text-[14px] font-medium text-foreground group-hover/item:text-primary transition-colors">Wholesale Dealer</p>
+                           <p className="text-[14px] font-medium text-foreground group-hover/item:text-blue-600 transition-colors">Wholesale Dealer</p>
                            <p className="text-[11px] text-muted-foreground mt-0.5">Access B2B pricing portal</p>
                          </div>
                       </button>
@@ -262,7 +262,7 @@ const Navbar = () => {
                       </div>
                     ) : (!isCustomer || location.pathname === '/') && (
                       <div className="flex flex-col gap-2.5 mt-5">
-                        <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-3.5 rounded-xl border transition-all flex items-center justify-center gap-2 font-bold tracking-wider text-sm">
+                        <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-3.5 rounded-xl border  transition-all flex items-center justify-center gap-2 font-bold tracking-wider text-sm">
                           <ShoppingCart className="w-4 h-4" /> Continue as Customer
                         </button>
                         <button onClick={() => { setMobileOpen(false); navigate('/dealer/register'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 font-bold tracking-wider shadow-lg text-sm">
