@@ -239,7 +239,7 @@ const Navbar = () => {
                 
                 {/* Scrollable Content */}
                 <div className="flex-1 overflow-y-auto px-6 py-2 flex flex-col">
-                  <div className="flex flex-col font-body text-[15px] tracking-widest font-bold text-foreground">
+                  <div className="flex flex-col font-body text-[16px] tracking-widest font-bold text-foreground">
                     <Link to="/" onClick={() => setMobileOpen(false)} className="hover:text-neon transition-colors py-2.5 border-b border-border/40 flex items-center justify-between">
                       {t('nav.home')}
                     </Link>
@@ -262,7 +262,7 @@ const Navbar = () => {
                       </div>
                     ) : (!isCustomer || location.pathname === '/') && (
                       <div className="flex flex-col gap-2.5 mt-5">
-                        <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 font-bold tracking-wider text-sm">
+                        <button onClick={() => { localStorage.setItem('role', 'customer'); setIsCustomer(true); setMobileOpen(false); navigate('/parts'); }} className="bg-secondary/50 text-foreground hover:bg-secondary px-4 py-3.5 rounded-xl border transition-all flex items-center justify-center gap-2 font-bold tracking-wider text-sm">
                           <ShoppingCart className="w-4 h-4" /> Continue as Customer
                         </button>
                         <button onClick={() => { setMobileOpen(false); navigate('/dealer/register'); }} className="bg-foreground text-background hover:bg-neon hover:text-accent-foreground px-4 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 font-bold tracking-wider shadow-lg text-sm">
