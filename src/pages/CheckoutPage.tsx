@@ -155,9 +155,7 @@ const CheckoutPage = () => {
   };
 
 
-  const cartCount = items.reduce((s, i) => s + i.quantity, 0);
-
-  if (!orderPlaced && (items.length === 0 || (isDealer && cartCount < 10))) { 
+  if (!orderPlaced && items.length === 0) { 
     navigate('/cart'); 
     return null; 
   }

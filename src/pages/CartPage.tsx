@@ -19,7 +19,7 @@ const CartPage = () => {
   const { user, profile } = useAuth();
   const isDealer = !!user && profile?.role === 'dealer' && profile?.is_approved;
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
-  const isDealerMOQMet = !isDealer || cartCount >= 10;
+  const isDealerMOQMet = true; // Minimum order quantity removed
 
   if (items.length === 0) {
     return (
@@ -169,21 +169,9 @@ const CartPage = () => {
                 <span>{t('cart.total')}</span><span className="text-blue-500 flex items-center font-bold"><DirhamIcon className="w-[2.5em] mr-1" />{finalTotal.toFixed(2)}</span>
               </div>
               
-              {!isDealerMOQMet && (
-                <div className="bg-red-50 text-red-600 border border-red-200 p-3 rounded-md mb-4 text-sm font-medium">
-                  Dealers must order a minimum of 10 items.
-                </div>
-              )}
-              
-              {isDealerMOQMet ? (
-                <Link to="/checkout" className="w-full block text-center bg-primary text-primary-foreground py-4 font-body text-sm font-bold tracking-wider uppercase hover:bg-primary/90 transition-all duration-300 rounded-md mb-3">
-                  {t('cart.checkout')}
-                </Link>
-              ) : (
-                <button disabled className="w-full block text-center bg-muted text-muted-foreground py-4 font-body text-sm font-bold tracking-wider uppercase rounded-md mb-3 opacity-50 cursor-not-allowed">
-                  {t('cart.checkout')}
-                </button>
-              )}
+              <Link to="/checkout" className="w-full block text-center bg-primary text-primary-foreground py-4 font-body text-sm font-bold tracking-wider uppercase hover:bg-primary/90 transition-all duration-300 rounded-md mb-3">
+                {t('cart.checkout')}
+              </Link>
               
               <p className="text-center font-body text-xs text-muted-foreground">{t('cart.cod_available')}</p>
             </div>
